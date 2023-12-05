@@ -1,7 +1,6 @@
 import { View, TextInput, StyleSheet, KeyboardAvoidingView } from 'react-native'
 import { router } from 'expo-router'
 import { Feather } from '@expo/vector-icons'
-import Header from '../../components/Header'
 import CircleButton from '../../components/CircleButton'
 
 const handlePress = (): void => {
@@ -11,7 +10,6 @@ const handlePress = (): void => {
 const Create = (): JSX.Element => {
   return (
     <KeyboardAvoidingView behavior='height' style={styles.container}>
-      <Header />
       <View style={styles.inputContainer}>
         <TextInput multiline style={styles.input} value='' />
       </View>
