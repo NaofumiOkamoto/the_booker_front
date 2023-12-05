@@ -1,17 +1,20 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { Feather } from '@expo/vector-icons'
+import { Link } from 'expo-router'
 
 const ListItem = (): JSX.Element => {
   return (
-    <View style={styles.listItem}>
-      <View>
-        <Text style={styles.listItemTitle}>リスト</Text>
-        <Text style={styles.listItemDetail}>詳細詳詳詳詳詳詳詳詳細細細細細細細細</Text>
-      </View>
-      <TouchableOpacity>
-        <Feather name='delete' />
+    <Link href='memo/detail' asChild>
+      <TouchableOpacity style={styles.listItem}>
+        <View>
+          <Text style={styles.listItemTitle}>リスト</Text>
+          <Text style={styles.listItemDetail}>詳細詳詳詳詳詳詳詳詳細細細細細細細細</Text>
+        </View>
+        <TouchableOpacity>
+          <Feather name='delete' />
+        </TouchableOpacity>
       </TouchableOpacity>
-    </View>
+    </Link>
   )
 }
 

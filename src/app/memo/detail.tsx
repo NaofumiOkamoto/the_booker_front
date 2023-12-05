@@ -1,7 +1,12 @@
 import { View, Text, ScrollView, StyleSheet } from 'react-native'
+import { router } from 'expo-router'
 import { Feather } from '@expo/vector-icons'
 import Header from '../../components/Header'
 import CircleButton from '../../components/CircleButton'
+
+const handlePress = (): void => {
+  router.push('memo/edit')
+}
 
 const Detail = (): JSX.Element => {
   return (
@@ -19,7 +24,7 @@ const Detail = (): JSX.Element => {
           本本本本本本本本本本本本文文文文文文文文文文文文
         </Text>
       </ScrollView>
-      <CircleButton style={{ top: 160, bottom: 'auto' }}>
+      <CircleButton onPress={handlePress} style={{ top: 160, bottom: 'auto' }}>
         <Feather name='check' size={40}/>
       </CircleButton>
     </View>
