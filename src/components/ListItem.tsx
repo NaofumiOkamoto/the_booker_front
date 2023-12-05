@@ -1,4 +1,5 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { Feather } from '@expo/vector-icons'
 
 const ListItem = (): JSX.Element => {
   return (
@@ -7,9 +8,9 @@ const ListItem = (): JSX.Element => {
         <Text style={styles.listItemTitle}>リスト</Text>
         <Text style={styles.listItemDetail}>詳細詳詳詳詳詳詳詳詳細細細細細細細細</Text>
       </View>
-      <View>
-        <Text>x</Text>
-      </View>
+      <TouchableOpacity>
+        <Feather name='delete' />
+      </TouchableOpacity>
     </View>
   )
 }
