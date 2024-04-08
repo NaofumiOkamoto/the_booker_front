@@ -9,7 +9,7 @@ const Confirm = (): JSX.Element => {
 
   return (
     <>
-    <Stack.Screen options={{ headerShown: true, title: 'Homeee' }} />
+    <Stack.Screen options={{ headerShown: true, title: '入力確認' }} />
     <View style={styles.container}>
       <View style={styles.inner}>
         <Text style={styles.title}>確認</Text>

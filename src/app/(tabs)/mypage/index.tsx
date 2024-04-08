@@ -9,6 +9,7 @@ const Index = (): JSX.Element => {
       <Text>マイページ</Text>
       <Text></Text>
       <Text>ユーザー情報</Text>
+      <Text>プラン</Text>
       <Text>Yahoo Id</Text>
       <Text>予約一覧</Text>
     </View>

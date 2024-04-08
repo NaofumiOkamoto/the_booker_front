@@ -11,6 +11,7 @@ const Index = (): JSX.Element => {
       <Text>・プライバシーポリシー</Text>
       <Text>・使い方</Text>
       <Text>・問い合わせ</Text>
+      <Text>・ログアウト</Text>
     </View>
     </>
   )

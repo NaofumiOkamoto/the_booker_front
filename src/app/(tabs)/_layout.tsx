@@ -9,7 +9,6 @@ const TabsLayout = (): JSX.Element => {
         tabBarActiveBackgroundColor: 'gainsboro',
         tabBarActiveTintColor: 'black',
         tabBarStyle: { height: 85, marginBottom: -25, padding: 3 }
-
       }
       }>
       <Tabs.Screen
