@@ -14,7 +14,7 @@ const LogIn = (): JSX.Element => {
         <Text style={styles.title}>Log In</Text>
         <TextInput style={styles.input} value='mail' />
         <TextInput style={styles.input} value='pass' />
-        <Button label='submit' onPress={handlePress}/>
+        <Button label='ログイン' onPress={handlePress}/>
         <View style={styles.footer}>
           <Text style={styles.footerText}>not registerd</Text>
           <Link href='/auth/sign_up' asChild>
