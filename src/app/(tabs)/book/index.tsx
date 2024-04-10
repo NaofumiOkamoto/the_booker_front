@@ -13,12 +13,17 @@ const Index = (): JSX.Element => {
   }, [])
 
   const handlePress = (): void => {
-    router.push('/book/form')
+    router.push(
+      {
+        pathname: '/book/form',
+        params: { platform: selectedPlatform }
+      }
+    )
   }
-  const [selectedOption, setSelectedOption] = useState<string>('')
+  const [selectedPlatform, setSelectedPlatform] = useState<string>('')
 
   const handleSelectOption = (option: string): void => {
-    setSelectedOption(option)
+    setSelectedPlatform(option)
   }
 
   return (
@@ -29,11 +34,11 @@ const Index = (): JSX.Element => {
       <View>
 
       <RadioButton
-        options={['yahoo', 'ebay']}
-        selectedOption={selectedOption}
+        options={['ヤフオク', 'ebay']}
+        selectedOption={selectedPlatform}
         onSelect={handleSelectOption}
       />
-      {selectedOption !== '' &&
+      {selectedPlatform !== '' &&
         <TouchableOpacity onPress={handlePress} style={styles.button}>
           <Text style={styles.buttonLabel}>次へ</Text>
         </TouchableOpacity>

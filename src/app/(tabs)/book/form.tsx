@@ -1,6 +1,6 @@
 import { View, StyleSheet, Text, TextInput } from 'react-native'
 import RNPickerSelect from 'react-native-picker-select'
-import { useNavigation, router, Stack } from 'expo-router'
+import { useNavigation, router, Stack, useLocalSearchParams } from 'expo-router'
 import { useEffect, useState } from 'react'
 import LogOutButton from '../../../components/LogOutButton'
 import Button from '../../../components/Button'
@@ -14,15 +14,21 @@ const Form = (): JSX.Element => {
   }, [])
 
   const handlePress = (): void => {
-    router.push('/book/confirm')
-    router.push({ pathname: '/book/confirm', params: { } })
+    router.push(
+      {
+        pathname: '/book/confirm',
+        params: { id, bidAmount, bitFirstAmount, maxAmount, selectMinute }
+      }
+    )
   }
 
   const [id, setId] = useState('')
   const [bidAmount, setBidAmount] = useState('')
   const [bitFirstAmount, setFirstAmount] = useState('')
   const [maxAmount, setMaxAmount] = useState('')
-  const [selectMinute, setSelectMinute] = useState('1')
+  const [selectMinute, setSelectMinute] = useState('5')
+  const params = useLocalSearchParams()
+  const { platform } = params
 
   // 通貨に戻す
   const convertToCurrency = (num: string): string => {
@@ -51,6 +57,7 @@ const Form = (): JSX.Element => {
     <>
     <Stack.Screen options={{ headerShown: true, title: '予約条件入力' }} />
     <View style={styles.container}>
+      <Text style={styles.platform}>{platform}</Text>
       <View style={styles.inner}>
         <Text>オークションID</Text>
         <TextInput
@@ -123,6 +130,12 @@ const styles = StyleSheet.create({
     fontSize: 26,
     paddingVertical: 27
   },
+  platform: {
+    paddingVertical: 24,
+    paddingHorizontal: 27,
+    marginTop: 20,
+    fontSize: 20
+  },
   button: {
     backgroundColor: '#467FD3',
     borderRadius: 4,
@@ -148,7 +161,7 @@ const styles = StyleSheet.create({
   inner: {
     paddingVertical: 24,
     paddingHorizontal: 27,
-    marginTop: 100
+    marginTop: 30
   },
   form: {
     flexDirection: 'row' // 縦で割る

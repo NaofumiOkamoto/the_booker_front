@@ -1,4 +1,4 @@
-import { Stack, router } from 'expo-router'
+import { Stack, router, useLocalSearchParams } from 'expo-router'
 import { View, StyleSheet, Text } from 'react-native'
 import Button from '../../../components/Button'
 
@@ -7,16 +7,19 @@ const Confirm = (): JSX.Element => {
     router.push('/book/confirm')
   }
 
+  const params = useLocalSearchParams()
+  const { id, bidAmount, bitFirstAmount, maxAmount, selectMinute } = params
+
   return (
     <>
     <Stack.Screen options={{ headerShown: true, title: '入力確認' }} />
     <View style={styles.container}>
       <View style={styles.inner}>
-        <Text style={styles.title}>確認</Text>
-          <Text>URL</Text>
-          <Text>購入したい金額</Text>
-          <Text>上限金額(追跡入札用)</Text>
-          <Text>残り時間~前で入札</Text>
+        <Text style={styles.column}>オークションID: { id }</Text>
+        <Text style={styles.column}>入札金額: {bidAmount}</Text>
+        <Text style={styles.column}>初回入札金額: {bitFirstAmount}</Text>
+        <Text style={styles.column}>上限金額: {maxAmount}</Text>
+        <Text style={styles.column}>{selectMinute}秒前に入札</Text>
         <Button label='登録' onPress={handlePress}/>
       </View>
     </View>
@@ -33,34 +36,13 @@ const styles = StyleSheet.create({
     fontSize: 26,
     paddingVertical: 27
   },
-  button: {
-    backgroundColor: '#467FD3',
-    borderRadius: 4,
-    alignSelf: 'flex-start',
-    marginBottom: 20
-  },
-  buttonLabel: {
-    fontSize: 16,
-    lineHeight: 32,
-    color: '#fff',
-    paddingVertical: 8,
-    paddingHorizontal: 24
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#DDD',
-    height: 48,
-    fontSize: 16,
-    padding: 8,
-    marginBottom: 16,
-    width: '90%'
-  },
   inner: {
     paddingVertical: 24,
     paddingHorizontal: 27
   },
-  form: {
-    flexDirection: 'row' // 縦で割る
+  column: {
+    fontSize: 18,
+    marginVertical: 20
   }
 })
 
