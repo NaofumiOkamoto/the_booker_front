@@ -4,8 +4,7 @@ import Button from '../../components/Button'
 import Footer from '../../components/Footer'
 
 const handlePress = (): void => {
-  // router.push('/memo/list')
-  router.replace('/book/platform')
+  router.replace('/(tabs)/home')
 }
 
 const SignUp = (): JSX.Element => {

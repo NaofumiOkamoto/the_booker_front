@@ -30,7 +30,7 @@ const Index = (): JSX.Element => {
     <>
     <Stack.Screen options={{ headerShown: true, title: '新規予約' }} />
     <View style={styles.container}>
-      <Text style={styles.title}>サイト選択</Text>
+      <Text style={styles.title}>予約するサイトを選択してください</Text>
       <View>
 
       <RadioButton
@@ -57,8 +57,8 @@ const styles = StyleSheet.create({
   main: {
   },
   title: {
-    fontSize: 26,
-    paddingVertical: 27
+    fontSize: 20,
+    paddingVertical: 50
   },
   platforms: {
     alignItems: 'flex-start'

@@ -18,7 +18,9 @@ const Index = (): JSX.Element => {
       <Link href='/menu/contact'>
         <Text>問い合わせ</Text>
       </ Link>
-      <Text>ログアウト</Text>
+      <Link href='/auth/log_in'>
+        <Text>ログアウト</Text>
+      </ Link>
     </View>
     </>
   )

@@ -4,7 +4,7 @@ import Button from '../../components/Button'
 
 const handlePress = (): void => {
   // ログイン
-  router.replace('/memo/list')
+  router.replace('/(tabs)/home')
 }
 
 const LogIn = (): JSX.Element => {
