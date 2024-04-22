@@ -4,7 +4,7 @@ import { View, StyleSheet, Text, ScrollView } from 'react-native'
 const Contact = (): JSX.Element => {
   return (
     <>
-    <Stack.Screen options={{ headerShown: true, title: '利用規約' }} />
+    <Stack.Screen options={{ headerShown: true, title: 'お問い合わせ' }} />
     <View style={styles.container}>
       <ScrollView style={styles.body_text}>
       <Text>

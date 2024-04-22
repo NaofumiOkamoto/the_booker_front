@@ -27,14 +27,14 @@ const TabsLayout = (): JSX.Element => {
             tabBarIcon: () => <Icon name="add" color="gray" size={28} />
           }}
       />
-      <Tabs.Screen
+      {/* <Tabs.Screen
         name="mypage"
         options={
           {
             tabBarLabel: 'マイページ',
             tabBarIcon: () => <Icon name="person" color="gray" size={28} />
           }}
-      />
+      /> */}
       <Tabs.Screen
         name="menu"
         options={
