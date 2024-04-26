@@ -9,17 +9,17 @@ interface RadioButtonProps {
 const RadioButton = ({ options, selectedOption, onSelect }: RadioButtonProps): JSX.Element => {
   return (
     <View style={styles.container}>
-      {options.map((option) => (
-        <TouchableOpacity
-          key={option}
-          style={styles.button}
-          onPress={() => { onSelect(option) }}
-        >
-          {selectedOption === option && <View style={styles.selectedIndicator} />}
-          {selectedOption !== option && <View style={styles.indicator} />}
-          <Text style={styles.text}>{option}</Text>
-        </TouchableOpacity>
-      ))}
+      <View style={styles.box}>
+        {options.map((option) => (
+          <TouchableOpacity
+            key={option}
+            style={selectedOption === option ? styles.selectedIndicator : styles.indicator}
+            onPress={() => { onSelect(option) }}
+          >
+            <Text style={styles.text}>{option}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
     </View>
   )
 }
@@ -29,28 +29,29 @@ const styles = StyleSheet.create({
     marginTop: 30,
     marginBottom: 100
   },
-  button: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 30
+  box: {
+    flexDirection: 'row'
   },
   text: {
-    fontSize: 26,
-    marginLeft: 8,
-    textAlign: 'left'
+    fontSize: 23,
+    textAlign: 'center'
   },
   selectedIndicator: {
-    width: 20,
-    height: 20,
+    width: 150,
+    height: 170,
+    margin: 20,
+    justifyContent: 'center',
     borderRadius: 6,
-    backgroundColor: 'blue' // 選択された状態の色
+    backgroundColor: 'lightsteelblue'
   },
   indicator: {
-    width: 20,
-    height: 20,
+    width: 150,
+    height: 170,
+    margin: 20,
+    justifyContent: 'center',
     borderRadius: 6,
     borderWidth: 1,
-    borderColor: 'blue'
+    borderColor: 'gainsboro'
   }
 })
 

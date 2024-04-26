@@ -1,9 +1,11 @@
-import { View, StyleSheet, Text, TextInput } from 'react-native'
+/* eslint-disable @typescript-eslint/no-misused-promises */
+import { View, StyleSheet, Text, TextInput, ActivityIndicator } from 'react-native'
 import RNPickerSelect from 'react-native-picker-select'
 import { useNavigation, router, Stack, useLocalSearchParams } from 'expo-router'
 import { useEffect, useState } from 'react'
 import LogOutButton from '../../../components/LogOutButton'
 import Button from '../../../components/Button'
+import axios from 'axios'
 
 const Form = (): JSX.Element => {
   const navigation = useNavigation()
@@ -17,18 +19,30 @@ const Form = (): JSX.Element => {
     router.push(
       {
         pathname: '/book/confirm',
-        params: { id, bidAmount, bitFirstAmount, maxAmount, selectMinute }
+        params: { auctionId, bidAmount, bitFirstAmount, maxAmount, selectMinute, prodTitle }
       }
     )
   }
 
-  const [id, setId] = useState('')
+  const [auctionId, setAuctionId] = useState('')
   const [bidAmount, setBidAmount] = useState('')
   const [bitFirstAmount, setFirstAmount] = useState('')
   const [maxAmount, setMaxAmount] = useState('')
   const [selectMinute, setSelectMinute] = useState('5')
+  const [prodTitle, setProdTitle] = useState('')
+
+  const [loding, setLoding] = useState(false)
   const params = useLocalSearchParams()
   const { platform } = params
+
+  // const [validForm, setValidForm] = useState(false)
+  const [validAuctionId, setValidAuctionId] = useState(true)
+
+  // useEffect(() => {
+  //   setValidForm(
+  //     validAuctionId
+  //   )
+  // }, [validAuctionId])
 
   // 通貨に戻す
   const convertToCurrency = (num: string): string => {
@@ -53,6 +67,28 @@ const Form = (): JSX.Element => {
     }
   }
 
+  const checkProd = async (): Promise<void> => {
+    console.log('check auctionId', auctionId)
+    try {
+      setLoding(true)
+      setValidAuctionId(true)
+      const res = await axios.get(`http://localhost:5001/api/check_prod?id=${auctionId}`)
+      const success = res.data.success
+      const title = res.data.title
+      console.log(title)
+      console.log(success)
+      setValidAuctionId(success)
+      setProdTitle(title)
+      setLoding(false)
+    } catch (e) {
+      setLoding(false)
+      setValidAuctionId(false)
+      setProdTitle('商品が存在しません')
+
+      console.log('eeeee: ', e)
+    }
+  }
+
   return (
     <>
     <Stack.Screen options={{ headerShown: true, title: '予約条件入力' }} />
@@ -61,11 +97,14 @@ const Form = (): JSX.Element => {
       <View style={styles.inner}>
         <Text>オークションID</Text>
         <TextInput
-          style={styles.input}
-          value={id}
+          style={validAuctionId ? styles.input : styles.invalidInput}
+          value={auctionId}
           keyboardType="web-search"
-          onChangeText={id => { setId(id) }}
+          onChangeText={auctionId => { setAuctionId(auctionId) }}
+          // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+          onBlur={async () => { await checkProd() }}
         />
+        <Text style={styles.productTitle}>{loding ? <>検索中<ActivityIndicator /></> : prodTitle}</Text>
         { true && // 無料プランの場合
           <>
           <Text>入札金額</Text>
@@ -136,6 +175,9 @@ const styles = StyleSheet.create({
     marginTop: 20,
     fontSize: 20
   },
+  productTitle: {
+    marginBottom: 20
+  },
   button: {
     backgroundColor: '#467FD3',
     borderRadius: 4,
@@ -152,6 +194,15 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
     borderColor: '#DDD',
+    height: 48,
+    fontSize: 16,
+    padding: 8,
+    marginBottom: 16,
+    width: '90%'
+  },
+  invalidInput: {
+    borderWidth: 1,
+    borderColor: 'red',
     height: 48,
     fontSize: 16,
     padding: 8,
