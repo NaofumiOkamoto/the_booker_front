@@ -16,7 +16,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.naofumiokamoto.ishioka"
     },
     "android": {
       "adaptiveIcon": {
@@ -29,6 +30,20 @@
     },
     "plugins": [
       "expo-router"
-    ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "25f4da8c-8569-42f0-a86c-36efb7a6c7f9"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/25f4da8c-8569-42f0-a86c-36efb7a6c7f9"
+    }
   }
 }
