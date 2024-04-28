@@ -1,61 +1,61 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { View, StyleSheet, Text, TextInput, ActivityIndicator } from 'react-native'
 import RNPickerSelect from 'react-native-picker-select'
-import { useNavigation, router, Stack, useLocalSearchParams } from 'expo-router'
+import { router, Stack, useLocalSearchParams } from 'expo-router'
 import { useEffect, useState } from 'react'
-import LogOutButton from '../../../components/LogOutButton'
 import Button from '../../../components/Button'
+import { convertNum, convertToCurrency, convertFromCurrency, convertStringToDate } from '../../lib/function'
 import axios from 'axios'
 
 const Form = (): JSX.Element => {
-  const navigation = useNavigation()
-  useEffect(() => {
-    navigation.setOptions({
-      headerRight: () => { return <LogOutButton /> }
-    })
-  }, [])
+  const userPlan: number = 1 // global stateか何かで保持する
 
-  const handlePress = (): void => {
-    router.push(
-      {
-        pathname: '/book/confirm',
-        params: { auctionId, bidAmount, bitFirstAmount, maxAmount, selectMinute, prodTitle }
-      }
-    )
-  }
-
+  // 入力情報
   const [auctionId, setAuctionId] = useState('')
   const [bidAmount, setBidAmount] = useState('')
-  const [bitFirstAmount, setFirstAmount] = useState('')
+  const [bidFirstAmount, setBidFirstAmount] = useState('')
   const [maxAmount, setMaxAmount] = useState('')
-  const [selectMinute, setSelectMinute] = useState('5')
+  const [selectSeconds, setselectSeconds] = useState('5')
+
+  // バリデーション
+  const [validForm, setValidForm] = useState(false)
+  const [validAuctionId, setValidAuctionId] = useState(true)
+  const [auctionIdInvalidMessage, setAuctionIdInvalidMessage] = useState('')
+  const [validBidAmount, setValidBidAmount] = useState(true)
+  const [bidAmountInvalidMessage, setBidAmountInvalidMessage] = useState('')
+  const [validBidFirstAmount, setValidBidFirstAmount] = useState(true)
+  const [bidFirstAmountInvalidMessage, setBidFirstAmountInvalidMessage] = useState('')
+  const [validMaxAmount, setValidMaxAmount] = useState(true)
+  const [maxAmountInvalidMessage, setmaxAmountInvalidMessage] = useState('')
+
+  // 取得情報
   const [prodTitle, setProdTitle] = useState('')
+  const [prodCurerntPrice, setProdCurerntPrice] = useState('')
+  const [prodCurerntPriceNum, setProdCurerntPriceNum] = useState(0)
+  const [closeTimeString, setCloseTimeString] = useState('')
+  const [closeTime, setCloseTime] = useState<Date | null>(null)
 
   const [loding, setLoding] = useState(false)
   const params = useLocalSearchParams()
   const { platform } = params
 
-  // const [validForm, setValidForm] = useState(false)
-  const [validAuctionId, setValidAuctionId] = useState(true)
+  useEffect(() => {
+    let valid = false
+    if (userPlan === 0) {
+      valid = !loding &&
+      !(auctionId === '') && validAuctionId &&
+      !(bidAmount === '') && validBidAmount
+    } else {
+      valid = !loding &&
+      !(auctionId === '') && validAuctionId &&
+      !(bidFirstAmount === '') && validBidFirstAmount &&
+      !(maxAmount === '') && validMaxAmount
+    }
+    console.log(`${validAuctionId}, ${validBidAmount},${validBidFirstAmount},${validMaxAmount}`)
+    setValidForm(valid)
+  }, [validAuctionId, validBidAmount, validBidFirstAmount, validMaxAmount, bidAmount, bidFirstAmount, maxAmount])
 
-  // useEffect(() => {
-  //   setValidForm(
-  //     validAuctionId
-  //   )
-  // }, [validAuctionId])
-
-  // 通貨に戻す
-  const convertToCurrency = (num: string): string => {
-    return '¥' + num.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,')
-  }
-
-  // 通貨から戻す
-  const convertFromCurrency = (num: string): string => {
-    let temp = num.replace('¥', '')
-    temp = temp.replace(',', '')
-    temp = temp.replace(' ', '')
-    return temp
-  }
+  // 何秒前
   const secondsItems = []
   for (let i = 5; i < 60 + 1; i++) {
     if (i % 5 === 0) {
@@ -70,23 +70,86 @@ const Form = (): JSX.Element => {
   const checkProd = async (): Promise<void> => {
     console.log('check auctionId', auctionId)
     try {
+      setValidAuctionId(false)
+      setProdTitle('')
+      setProdCurerntPrice('')
+      setProdCurerntPriceNum(0)
+      if (auctionId === '') {
+        setAuctionIdInvalidMessage('オークションIDを入力してください')
+        return
+      }
+      if (!/^[a-zA-Z0-9]{8,11}$/.test(auctionId)) {
+        setAuctionIdInvalidMessage('オークションIDが正しくありません。オークションIDは英数字の8~11桁です。')
+        return
+      }
       setLoding(true)
-      setValidAuctionId(true)
       const res = await axios.get(`http://localhost:5001/api/check_prod?id=${auctionId}`)
-      const success = res.data.success
-      const title = res.data.title
-      console.log(title)
-      console.log(success)
+      const success: boolean = res.data.success
+      if (success) {
+        const title = res.data.title
+        const currentPrice = res.data.current_price
+        const closeTimeString = res.data.close_time
+        const currentPriceNum = convertNum(currentPrice)
+        console.log(`${success}: ${title}: ${currentPrice}: ${closeTimeString}`)
+        setCloseTimeString(closeTimeString)
+        setCloseTime(convertStringToDate(closeTimeString))
+        setProdTitle(title)
+        setProdCurerntPrice(currentPrice)
+        setProdCurerntPriceNum(currentPriceNum)
+        setAuctionIdInvalidMessage('')
+        if (bidAmount !== '') {
+          setValidBidAmount(currentPriceNum < convertNum(bidAmount))
+        }
+      } else {
+        setAuctionIdInvalidMessage('商品が存在しません')
+      }
       setValidAuctionId(success)
-      setProdTitle(title)
       setLoding(false)
     } catch (e) {
       setLoding(false)
       setValidAuctionId(false)
-      setProdTitle('商品が存在しません')
+      setAuctionIdInvalidMessage('商品が存在しません')
 
-      console.log('eeeee: ', e)
+      console.log('checkProdでエラー: ', e)
     }
+  }
+
+  const checkAmount = (amount: string, setValid: (boolean: boolean) => void, setMessage: (message: string) => void): void => {
+    if (auctionId === '') {
+      setValid(true)
+      return
+    }
+    const isBidAmountThanCurrent = prodCurerntPriceNum > 0 && prodCurerntPriceNum < convertNum(amount)
+    setValid(isBidAmountThanCurrent)
+    if (isBidAmountThanCurrent) {
+      setMessage('')
+    } else {
+      setMessage('現在価格より高い金額を入力してください')
+    }
+  }
+
+  const checkMaxAmount = (): void => {
+    if (auctionId === '') {
+      setValidMaxAmount(true)
+      return
+    }
+
+    const isMaxAmountThanBid = convertNum(bidFirstAmount) <= convertNum(maxAmount) && prodCurerntPriceNum < convertNum(maxAmount)
+    setValidMaxAmount(isMaxAmountThanBid)
+    if (isMaxAmountThanBid) {
+      setmaxAmountInvalidMessage('')
+    } else {
+      setmaxAmountInvalidMessage('現在価格と初回入札金額より高い金額を入力してください')
+    }
+  }
+
+  const handlePress = (): void => {
+    router.push(
+      {
+        pathname: '/book/confirm',
+        params: { auctionId, bidAmount, bidFirstAmount, maxAmount, selectSeconds, prodTitle, closeTime }
+      }
+    )
   }
 
   return (
@@ -96,6 +159,7 @@ const Form = (): JSX.Element => {
       <Text style={styles.platform}>{platform}</Text>
       <View style={styles.inner}>
         <Text>オークションID</Text>
+        {auctionIdInvalidMessage !== '' && (<Text style={styles.invalidMessage}>{auctionIdInvalidMessage}</Text>)}
         <TextInput
           style={validAuctionId ? styles.input : styles.invalidInput}
           value={auctionId}
@@ -104,56 +168,80 @@ const Form = (): JSX.Element => {
           // eslint-disable-next-line @typescript-eslint/no-unused-expressions
           onBlur={async () => { await checkProd() }}
         />
-        <Text style={styles.productTitle}>{loding ? <>検索中<ActivityIndicator /></> : prodTitle}</Text>
-        { true && // 無料プランの場合
+        <View style={styles.productTitle}>
+          {
+          loding
+            ? (<Text>検索中<ActivityIndicator /></Text>)
+            : (
+              <View>
+                <Text>商品名: {prodTitle}</Text>
+                <Text>現在価格: {prodCurerntPrice}</Text>
+                <Text>終了日時: {closeTimeString}</Text>
+              </View>
+              )
+          }
+        </View>
+        { userPlan === 0 && // 無料プランの場合
           <>
           <Text>入札金額</Text>
+          {bidAmountInvalidMessage !== '' && (<Text style={styles.invalidMessage}>{bidAmountInvalidMessage}</Text>)}
           <TextInput
-            style={styles.input}
+            style={validBidAmount ? styles.input : styles.invalidInput}
             value={bidAmount}
             keyboardType="number-pad"
-            onChangeText={input => { setBidAmount(isNaN(Number(input)) ? bidAmount : input) }}
             returnKeyType={'done'}
+            onChangeText={input => { setBidAmount(isNaN(Number(input)) ? bidAmount : input) }}
             onFocus={() => { setBidAmount(convertFromCurrency(bidAmount)) }}
-            onBlur={() => { if (bidAmount !== '') setBidAmount(convertToCurrency(bidAmount)) }}
+            onBlur={() => {
+              checkAmount(bidAmount, setValidBidAmount, setBidAmountInvalidMessage)
+              setBidAmount(convertToCurrency(bidAmount))
+            }}
           />
           </>
         }
-        { true && // 有料プランの場合
+        { userPlan > 0 && // 有料プランの場合
           <>
           <Text>初回入札金額</Text>
+          {bidFirstAmountInvalidMessage !== '' && (<Text style={styles.invalidMessage}>{bidFirstAmountInvalidMessage}</Text>)}
           <TextInput
-            style={styles.input}
-            value={bitFirstAmount}
+            style={validBidFirstAmount ? styles.input : styles.invalidInput}
+            value={bidFirstAmount}
             keyboardType="number-pad"
-            onChangeText={input => { setFirstAmount(isNaN(Number(input)) ? bitFirstAmount : input) }}
+            onChangeText={input => { setBidFirstAmount(isNaN(Number(input)) ? bidFirstAmount : input) }}
             returnKeyType={'done'}
-            onFocus={() => { setFirstAmount(convertFromCurrency(bitFirstAmount)) }}
-            onBlur={() => { if (bitFirstAmount !== '') setFirstAmount(convertToCurrency(bitFirstAmount)) }}
+            onFocus={() => { setBidFirstAmount(convertFromCurrency(bidFirstAmount)) }}
+            onBlur={() => {
+              checkAmount(bidFirstAmount, setValidBidFirstAmount, setBidFirstAmountInvalidMessage)
+              setBidFirstAmount(convertToCurrency(bidFirstAmount))
+            }}
           />
           <Text>上限金額</Text>
+          {maxAmountInvalidMessage !== '' && (<Text style={styles.invalidMessage}>{maxAmountInvalidMessage}</Text>)}
           <TextInput
-            style={styles.input}
+            style={validMaxAmount ? styles.input : styles.invalidInput}
             value={maxAmount}
             keyboardType="number-pad"
             onChangeText={input => { setMaxAmount(isNaN(Number(input)) ? maxAmount : input) }}
             returnKeyType={'done'}
             onFocus={() => { setMaxAmount(convertFromCurrency(maxAmount)) }}
-            onBlur={() => { if (maxAmount !== '') setMaxAmount(convertToCurrency(maxAmount)) }}
+            onBlur={() => {
+              checkMaxAmount()
+              setMaxAmount(convertToCurrency(maxAmount))
+            }}
           />
           </>
         }
         <Text>入札タイミング</Text>
         <RNPickerSelect
-          value={selectMinute}
-          onValueChange={(value) => { setSelectMinute(value) }}
+          value={selectSeconds}
+          onValueChange={(value) => { setselectSeconds(value) }}
           items={secondsItems}
           placeholder={{ label: '秒前', value: '' }}
           style={pickerSelectStyles}
           useNativeAndroidPickerStyle={false}
           Icon={() => (<Text style={{ position: 'absolute', right: 10, top: 8, fontSize: 18, color: '#789' }}>▼</Text>)}
         />
-        <Button label='確認' onPress={handlePress} />
+        <Button label='確認' onPress={handlePress} disabled={!validForm}/>
       </View>
     </View>
     </>
@@ -178,6 +266,9 @@ const styles = StyleSheet.create({
   productTitle: {
     marginBottom: 20
   },
+  invalidMessage: {
+    color: 'red'
+  },
   button: {
     backgroundColor: '#467FD3',
     borderRadius: 4,
@@ -200,6 +291,16 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     width: '90%'
   },
+  disabledInput: {
+    borderWidth: 1,
+    borderColor: '#DDD',
+    height: 48,
+    fontSize: 16,
+    padding: 8,
+    marginBottom: 16,
+    width: '90%',
+    backgroundColor: '#a9a9a9'
+  },
   invalidInput: {
     borderWidth: 1,
     borderColor: 'red',
@@ -212,7 +313,7 @@ const styles = StyleSheet.create({
   inner: {
     paddingVertical: 24,
     paddingHorizontal: 27,
-    marginTop: 30
+    marginTop: 10
   },
   form: {
     flexDirection: 'row' // 縦で割る

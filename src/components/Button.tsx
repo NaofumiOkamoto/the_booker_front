@@ -2,12 +2,13 @@ import { Text, TouchableOpacity, StyleSheet } from 'react-native'
 
 interface Props {
   label: string
+  disabled?: boolean
   onPress?: () => void
 }
 const Button = (props: Props): JSX.Element => {
-  const { label, onPress } = props
+  const { label, onPress, disabled = false } = props
   return (
-    <TouchableOpacity onPress={onPress} style={styles.button}>
+    <TouchableOpacity onPress={onPress} style={disabled ? styles.invalidButton : styles.button} disabled={disabled}>
       <Text style={styles.buttonLabel}>{label}</Text>
     </TouchableOpacity>
   )
@@ -16,6 +17,12 @@ const Button = (props: Props): JSX.Element => {
 const styles = StyleSheet.create({
   button: {
     backgroundColor: '#467FD3',
+    borderRadius: 4,
+    alignSelf: 'flex-start',
+    marginBottom: 24
+  },
+  invalidButton: {
+    backgroundColor: '#a9a9a9',
     borderRadius: 4,
     alignSelf: 'flex-start',
     marginBottom: 24

@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react'
 import { View, StyleSheet, Text, ScrollView } from 'react-native'
 
 interface Book {
-  auction_id: string
   id: number
+  auction_id: string
   product_name: string
 }
 const BookHistory = (): JSX.Element => {
@@ -17,7 +17,7 @@ const BookHistory = (): JSX.Element => {
         const books = res.data.books
         setBooks(books)
       } catch (e) {
-        console.log('eeeee: ', e)
+        console.log('予約履歴取得時エラー: ', e)
       }
     })()
   }, [])
@@ -30,7 +30,7 @@ const BookHistory = (): JSX.Element => {
       <ScrollView style={styles.body_text}>
       <View>
         { books?.map(book => {
-          return (<Text style={styles.list} key={book.auction_id}>{book.product_name},</Text>)
+          return (<Text style={styles.list} key={book.id}>{book.product_name},</Text>)
         }) }
       </View>
       </ScrollView>
