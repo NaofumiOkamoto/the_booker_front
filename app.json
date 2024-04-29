@@ -2,7 +2,7 @@
   "expo": {
     "name": "TheBooker",
     "slug": "TheBooker",
-    "scheme": "TheBooker",
+    "scheme": "thebooker",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -36,14 +36,14 @@
         "origin": false
       },
       "eas": {
-        "projectId": "25f4da8c-8569-42f0-a86c-36efb7a6c7f9"
+        "projectId": "1567ff5d-c6a5-4f7e-a20f-1eddab70eef4"
       }
     },
     "runtimeVersion": {
       "policy": "appVersion"
     },
     "updates": {
-      "url": "https://u.expo.dev/25f4da8c-8569-42f0-a86c-36efb7a6c7f9"
+      "url": "https://u.expo.dev/1567ff5d-c6a5-4f7e-a20f-1eddab70eef4"
     }
   }
 }
