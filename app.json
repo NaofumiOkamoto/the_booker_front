@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "ishioka",
-    "slug": "ishioka",
-    "scheme": "ishioka",
+    "name": "TheBooker",
+    "slug": "TheBooker",
+    "scheme": "TheBooker",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -17,7 +17,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.naofumiokamoto.ishioka"
+      "bundleIdentifier": "com.naofumiokamoto.TheBooker"
     },
     "android": {
       "adaptiveIcon": {
