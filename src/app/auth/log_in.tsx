@@ -33,6 +33,7 @@ const LogIn = (): JSX.Element => {
           keyboardType='email-address'
           autoCapitalize='none'
           textContentType='emailAddress'
+          placeholder='email'
         />
         <TextInput
           style={styles.input}
@@ -40,6 +41,7 @@ const LogIn = (): JSX.Element => {
           onChangeText={(text) => { setPassword(text) }}
           secureTextEntry
           autoCapitalize='none'
+          placeholder='password'
         />
         <CustomButton label='ログイン' onPress={ () => { handlePress(email, password) }}/>
         <View style={styles.footer}>
