@@ -5,7 +5,7 @@ interface Props {
   disabled?: boolean
   onPress?: () => void
 }
-const Button = (props: Props): JSX.Element => {
+const CustomButton = (props: Props): JSX.Element => {
   const { label, onPress, disabled = false } = props
   return (
     <TouchableOpacity onPress={onPress} style={disabled ? styles.invalidButton : styles.button} disabled={disabled}>
@@ -36,4 +36,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Button
+export default CustomButton

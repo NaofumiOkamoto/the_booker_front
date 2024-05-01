@@ -4,7 +4,7 @@ import { useNavigation, router } from 'expo-router'
 import { useEffect, useState } from 'react'
 import LogOutButton from '../../components/LogOutButton'
 import Footer from '../../components/Footer'
-import Button from '../../components/Button'
+import CustomButton from '../../components/Button'
 
 const Form = (): JSX.Element => {
   const navigation = useNavigation()
@@ -30,7 +30,7 @@ const Form = (): JSX.Element => {
           <TextInput style={styles.input} value='' />
           <Text>残り時間~前で入札</Text>
           <TextInput style={styles.input} value='' />
-        <Button label='確認' onPress={handlePress}/>
+        <CustomButton label='確認' onPress={handlePress}/>
       </View>
       <Footer />
     </View>

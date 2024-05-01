@@ -1,6 +1,6 @@
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native'
 import { Link, router } from 'expo-router'
-import Button from '../../components/Button'
+import CustomButton from '../../components/Button'
 import Footer from '../../components/Footer'
 
 const handlePress = (): void => {
@@ -14,7 +14,7 @@ const SignUp = (): JSX.Element => {
         <Text style={styles.title}>Sign Up</Text>
         <TextInput style={styles.input} value='mail' />
         <TextInput style={styles.input} value='pass' />
-        <Button label='登録' onPress={handlePress}/>
+        <CustomButton label='登録' onPress={handlePress}/>
         <View style={styles.footer}>
           <Text style={styles.footerText}>Already registerd</Text>
           <Link href='/auth/log_in' asChild>

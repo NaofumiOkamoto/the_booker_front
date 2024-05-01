@@ -1,7 +1,7 @@
 import { Stack, router, useLocalSearchParams } from 'expo-router'
 import { View, StyleSheet, Text } from 'react-native'
 import { convertNum } from '../../lib/function'
-import Button from '../../../components/Button'
+import CustomButton from '../../../components/Button'
 import axios from 'axios'
 import dayjs from 'dayjs'
 
@@ -36,7 +36,7 @@ const Confirm = (): JSX.Element => {
         <Text style={styles.column}>初回入札金額: {bidFirstAmount}</Text>
         <Text style={styles.column}>上限金額: {maxAmount}</Text>
         <Text style={styles.column}>{selectSeconds}秒前に入札</Text>
-        <Button
+        <CustomButton
           label='登録'
           // eslint-disable-next-line @typescript-eslint/no-misused-promises
           onPress={ async () => { await handlePress() } }

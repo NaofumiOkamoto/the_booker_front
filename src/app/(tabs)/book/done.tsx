@@ -1,7 +1,7 @@
-import { Stack, router, useLocalSearchParams } from 'expo-router'
+import { Stack, Link, router, useLocalSearchParams } from 'expo-router'
 import { View, StyleSheet, Text } from 'react-native'
 // import { convertNum } from '../../lib/function'
-// import Button from '../../../components/Button'
+import CustomButton from '../../../components/Button'
 // import axios from 'axios'
 // import dayjs from 'dayjs'
 
@@ -10,15 +10,19 @@ const Done = (): JSX.Element => {
   // const { auctionId, bidAmount, bidFirstAmount, maxAmount, selectSeconds, prodTitle, closeTime } = params
   // const handlePress = async (): Promise<void> => {
   // }
-
+  const handlePress = (): void => {
+    router.replace({ pathname: '/book/form', params: {done: true} })
+  }
   return (
     <>
-    <Stack.Screen options={{ headerShown: true, title: '入力確認' }} />
+    <Stack.Screen options={{ headerShown: false, title: '入力確認' }} />
     <View style={styles.container}>
       <View style={styles.inner}>
         <Text>
-          登録完了！！！
+          予約が完了しました。
         </Text>
+        <CustomButton label='予約を続ける' onPress={handlePress}/>
+        <CustomButton label='予約完了' onPress={handlePress}/>
       </View>
     </View>
     </>

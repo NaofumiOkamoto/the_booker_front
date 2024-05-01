@@ -4,7 +4,7 @@ import { useNavigation, router } from 'expo-router'
 import { useEffect, useState } from 'react'
 import LogOutButton from '../../components/LogOutButton'
 import Footer from '../../components/Footer'
-import Button from '../../components/Button'
+import CustomButton from '../../components/Button'
 
 const Form = (): JSX.Element => {
   const navigation = useNavigation()
@@ -26,7 +26,7 @@ const Form = (): JSX.Element => {
           <Text>購入したい金額</Text>
           <Text>上限金額(追跡入札用)</Text>
           <Text>残り時間~前で入札</Text>
-        <Button label='登録' onPress={handlePress}/>
+        <CustomButton label='登録' onPress={handlePress}/>
       </View>
       <Footer />
     </View>

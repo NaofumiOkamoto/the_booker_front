@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { View, StyleSheet, Text, TextInput, ActivityIndicator } from 'react-native'
+import { View, StyleSheet, Text, TextInput, ActivityIndicator, Button } from 'react-native'
 import RNPickerSelect from 'react-native-picker-select'
 import { router, Stack, useLocalSearchParams } from 'expo-router'
 import { useEffect, useState } from 'react'
-import Button from '../../../components/Button'
+import CustomButton from '../../../components/Button'
 import { convertNum, convertToCurrency, convertFromCurrency, convertStringToDate } from '../../lib/function'
 import axios from 'axios'
+import { useNavigation } from '@react-navigation/native'
 
 const Form = (): JSX.Element => {
   const userPlan: number = 1 // global stateか何かで保持する
@@ -37,7 +38,7 @@ const Form = (): JSX.Element => {
 
   const [loding, setLoding] = useState(false)
   const params = useLocalSearchParams()
-  const { platform } = params
+  const { platform, done } = params
 
   useEffect(() => {
     let valid = false
@@ -152,9 +153,22 @@ const Form = (): JSX.Element => {
     )
   }
 
+  const rootNavigation = useNavigation()
+  const headerLeft = done as unknown as boolean
+    ? {
+        headerLeft: () =>
+      <Button
+        title="新規予約"
+        onPress={() => {
+          rootNavigation.navigate('index' as never)
+        }}
+      />
+      }
+    : {}
+
   return (
     <>
-    <Stack.Screen options={{ headerShown: true, title: '予約条件入力' }} />
+    <Stack.Screen options={{ headerShown: true, title: '予約条件入力', ...headerLeft }} />
     <View style={styles.container}>
       <Text style={styles.platform}>{platform}</Text>
       <View style={styles.inner}>
@@ -241,7 +255,7 @@ const Form = (): JSX.Element => {
           useNativeAndroidPickerStyle={false}
           Icon={() => (<Text style={{ position: 'absolute', right: 10, top: 8, fontSize: 18, color: '#789' }}>▼</Text>)}
         />
-        <Button label='確認' onPress={handlePress} disabled={!validForm}/>
+        <CustomButton label='確認' onPress={handlePress} disabled={!validForm}/>
       </View>
     </View>
     </>
