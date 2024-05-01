@@ -33,3 +33,20 @@ export function convertStringToDate (dateString: string): Date | null {
   // Dateオブジェクトを生成して返す
   return new Date(year, month - 1, day, hour, minute)
 }
+
+export function authError (code: string): string {
+  switch (code) {
+    case 'auth/invalid-email':
+      return '無効なメールアドレスです'
+    case 'auth/missing-password':
+      return 'パスワードを入力してください'
+    case 'auth/invalid-credential':
+      return 'メールアドレスまたはパスワードが間違っています'
+    case 'auth/weak-password':
+      return 'パスワードが弱すぎます'
+    case 'auth/email-already-in-use':
+      return 'このメールアドレスは既に使用されています'
+    default:
+      return code
+  }
+}

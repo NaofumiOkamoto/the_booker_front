@@ -4,6 +4,7 @@ import CustomButton from '../../components/Button'
 import { useState } from 'react'
 import { auth } from '../../config'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { authError } from '../lib/function'
 
 const handlePress = (email: string, password: string): void => {
   createUserWithEmailAndPassword(auth, email, password)
@@ -14,7 +15,7 @@ const handlePress = (email: string, password: string): void => {
     .catch((error) => {
       const { code, message } = error
       console.log(code, message)
-      Alert.alert(message)
+      Alert.alert(authError(code))
     })
 }
 
