@@ -1,4 +1,4 @@
-import { Stack, Link, router, useLocalSearchParams } from 'expo-router'
+import { Stack, router } from 'expo-router'
 import { View, StyleSheet, Text } from 'react-native'
 // import { convertNum } from '../../lib/function'
 import CustomButton from '../../../components/Button'
@@ -11,7 +11,7 @@ const Done = (): JSX.Element => {
   // const handlePress = async (): Promise<void> => {
   // }
   const handlePress = (): void => {
-    router.replace({ pathname: '/book/form', params: {done: true} })
+    router.replace({ pathname: '/book/form', params: { done: true } })
   }
   return (
     <>
