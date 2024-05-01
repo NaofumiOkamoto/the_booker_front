@@ -1,5 +1,6 @@
 import { Link, Stack } from 'expo-router'
 import { View, StyleSheet, Text } from 'react-native'
+import LogOutButton from '../../../components/LogOutButton'
 
 const Index = (): JSX.Element => {
   return (
@@ -28,9 +29,7 @@ const Index = (): JSX.Element => {
       <Link href='/menu/contact'>
         <Text>問い合わせ</Text>
       </ Link>
-      <Link href='/auth/log_in'>
-        <Text>ログアウト</Text>
-      </ Link>
+      <LogOutButton />
     </View>
     </>
   )

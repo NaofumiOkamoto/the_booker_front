@@ -1,20 +1,47 @@
-import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert } from 'react-native'
 import { Link, router } from 'expo-router'
 import CustomButton from '../../components/Button'
-import Footer from '../../components/Footer'
+import { useState } from 'react'
+import { auth } from '../../config'
+import { createUserWithEmailAndPassword } from 'firebase/auth'
 
-const handlePress = (): void => {
-  router.replace('/(tabs)/home')
+const handlePress = (email: string, password: string): void => {
+  createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      console.log('userCredential: ', userCredential)
+      router.replace('/(tabs)/home')
+    })
+    .catch((error) => {
+      const { code, message } = error
+      console.log(code, message)
+      Alert.alert(message)
+    })
 }
 
 const SignUp = (): JSX.Element => {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
   return (
     <View style={styles.container}>
       <View style={styles.inner}>
         <Text style={styles.title}>Sign Up</Text>
-        <TextInput style={styles.input} value='mail' />
-        <TextInput style={styles.input} value='pass' />
-        <CustomButton label='登録' onPress={handlePress}/>
+        <TextInput
+          style={styles.input}
+          value={email}
+          onChangeText={(text) => { setEmail(text) }}
+          keyboardType='email-address'
+          autoCapitalize='none'
+          textContentType='emailAddress'
+        />
+        <TextInput
+          style={styles.input}
+          value={password}
+          onChangeText={(text) => { setPassword(text) }}
+          secureTextEntry
+          autoCapitalize='none'
+        />
+        <CustomButton label='登録' onPress={ () => { handlePress(email, password) }}/>
         <View style={styles.footer}>
           <Text style={styles.footerText}>Already registerd</Text>
           <Link href='/auth/log_in' asChild>
@@ -24,7 +51,6 @@ const SignUp = (): JSX.Element => {
           </Link>
         </View>
       </View>
-      <Footer />
     </View>
   )
 }
