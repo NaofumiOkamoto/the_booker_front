@@ -84,7 +84,7 @@ const Form = (): JSX.Element => {
         return
       }
       setLoding(true)
-      const res = await axios.get(`http://localhost:5001/api/check_prod?id=${auctionId}`)
+      const res = await axios.get(`http://153.126.213.57:5001/api/check_prod?id=${auctionId}`)
       const success: boolean = res.data.success
       if (success) {
         const title = res.data.title

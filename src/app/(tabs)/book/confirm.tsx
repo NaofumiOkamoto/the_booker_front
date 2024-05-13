@@ -9,7 +9,7 @@ const Confirm = (): JSX.Element => {
   const params = useLocalSearchParams()
   const { auctionId, bidAmount, bidFirstAmount, maxAmount, selectSeconds, prodTitle, closeTime } = params
   const handlePress = async (): Promise<void> => {
-    const res = await axios.post('http://localhost:5001/book', {
+    const res = await axios.post('http://153.126.213.57:5001/book', {
       book: {
         user_id: 1,
         auction_id: auctionId,
