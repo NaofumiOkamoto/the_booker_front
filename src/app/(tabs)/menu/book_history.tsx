@@ -1,12 +1,18 @@
 import axios from 'axios'
+import dayjs from 'dayjs'
 import { Stack } from 'expo-router'
 import { useEffect, useState } from 'react'
 import { View, StyleSheet, Text, ScrollView } from 'react-native'
+import { convertToCurrency } from '../../lib/function'
 
 interface Book {
   id: number
   auction_id: string
   product_name: string
+  close_time: Date
+  bid_first_amount: number
+  max_amount: number
+  seconds: number
 }
 const BookHistory = (): JSX.Element => {
   const [books, setBooks] = useState<Book[]>([])
@@ -30,7 +36,16 @@ const BookHistory = (): JSX.Element => {
       <ScrollView style={styles.body_text}>
       <View>
         { books?.map(book => {
-          return (<Text style={styles.list} key={book.id}>{book.product_name},</Text>)
+          return (
+            <View style={styles.list} key={book.id}>
+              <Text style={styles.list_text}>{book.product_name}</Text>
+              <Text style={styles.list_text}>オークションID: {book.auction_id}</Text>
+              <Text style={styles.list_text}>終了予定日時: {dayjs(book.close_time).format('YYYY/MM/DD hh:mm:ss')}</Text>
+              <Text style={styles.list_text}>初回入札金額: {convertToCurrency(String(book.bid_first_amount))}</Text>
+              <Text style={styles.list_text}>上限金額: {convertToCurrency(String(book.max_amount))}</Text>
+              <Text style={styles.list_text}>入札時間: 終了{book.seconds}秒前</Text>
+            </View>
+          )
         }) }
       </View>
       </ScrollView>
@@ -45,11 +60,16 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   body_text: {
-    padding: 30
+    paddingTop: 30
   },
   list: {
-    marginTop: 20
+    marginTop: 20,
+    width: '90%'
+  },
+  list_text: {
+    fontSize: 15
   }
+
 })
 
 export default BookHistory
