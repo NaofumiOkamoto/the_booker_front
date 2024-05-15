@@ -15,17 +15,26 @@ const handlePress = (): void => {
 
 const LogOutButton = (): JSX.Element => {
   return (
-    <TouchableOpacity onPress={handlePress}>
-      <Text style={styles.text}>ログアウト</Text>
+    <TouchableOpacity style={styles.list_item}onPress={handlePress}>
+      <Text style={styles.list_item_text}>ログアウト</Text>
     </TouchableOpacity>
   )
 }
 
 const styles = StyleSheet.create({
-  text: {
+  list_item: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 16,
+    paddingHorizontal: 19,
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderColor: 'rgba(0,0,0,0.15)'
+  },
+  list_item_text: {
     fontSize: 16,
-    lineHeight: 32
-    // color: 'rgba(255,255,255,0.7)'
+    lineHeight: 25,
+    paddingLeft: 20
   }
 })
 

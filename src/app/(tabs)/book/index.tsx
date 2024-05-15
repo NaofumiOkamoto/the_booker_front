@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native'
+import { View, StyleSheet, Text } from 'react-native'
 import { router, Stack } from 'expo-router'
 import { useState } from 'react'
 import RadioButton from '../../../components/RadioButton'
@@ -12,18 +12,16 @@ const Index = (): JSX.Element => {
   //   })
   // }, [])
 
-  const handlePress = (): void => {
+  const [selectedPlatform, setSelectedPlatform] = useState<string>('')
+
+  const handleSelectOption = (option: string): void => {
+    setSelectedPlatform(option)
     router.push(
       {
         pathname: '/book/form',
         params: { platform: selectedPlatform }
       }
     )
-  }
-  const [selectedPlatform, setSelectedPlatform] = useState<string>('')
-
-  const handleSelectOption = (option: string): void => {
-    setSelectedPlatform(option)
   }
 
   return (
@@ -38,11 +36,6 @@ const Index = (): JSX.Element => {
         selectedOption={selectedPlatform}
         onSelect={handleSelectOption}
       />
-      {selectedPlatform !== '' &&
-        <TouchableOpacity onPress={handlePress} style={styles.button}>
-          <Text style={styles.buttonLabel}>次へ</Text>
-        </TouchableOpacity>
-      }
       </View>
     </View>
     </>
