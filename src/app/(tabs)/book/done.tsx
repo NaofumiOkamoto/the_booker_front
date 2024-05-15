@@ -10,7 +10,7 @@ const Done = (): JSX.Element => {
   // const { auctionId, bidAmount, bidFirstAmount, maxAmount, selectSeconds, prodTitle, closeTime } = params
   // const handlePress = async (): Promise<void> => {
   // }
-  const handlePress = (): void => {
+  const handlePress = (pass: string): void => {
     router.replace({ pathname: '/book/form', params: { done: true } })
   }
   return (
@@ -21,8 +21,8 @@ const Done = (): JSX.Element => {
         <Text>
           予約が完了しました。
         </Text>
-        <CustomButton label='予約を続ける' onPress={handlePress}/>
-        <CustomButton label='予約完了' onPress={handlePress}/>
+        <CustomButton label='予約を続ける' onPress={ () => { handlePress('/book/form') }}/>
+        <CustomButton label='予約完了' onPress={ () => { handlePress('/home') }}/>
       </View>
     </View>
     </>
