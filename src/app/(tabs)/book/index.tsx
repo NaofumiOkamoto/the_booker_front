@@ -1,16 +1,16 @@
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native'
-import { useNavigation, router, Stack } from 'expo-router'
-import { useEffect, useState } from 'react'
-import LogOutButton from '../../../components/LogOutButton'
+import { router, Stack } from 'expo-router'
+import { useState } from 'react'
 import RadioButton from '../../../components/RadioButton'
 
 const Index = (): JSX.Element => {
-  const navigation = useNavigation()
-  useEffect(() => {
-    navigation.setOptions({
-      headerRight: () => { return <LogOutButton /> }
-    })
-  }, [])
+  // 右上にボタン表示する場合
+  // const navigation = useNavigation()
+  // useEffect(() => {
+  //   navigation.setOptions({
+  //     headerRight: () => { return <LogOutButton /> }
+  //   })
+  // }, [])
 
   const handlePress = (): void => {
     router.push(
