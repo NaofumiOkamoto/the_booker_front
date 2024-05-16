@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { View, StyleSheet, Text, TextInput, ActivityIndicator, Button } from 'react-native'
+import { View, StyleSheet, Text, TextInput, ActivityIndicator, Button, ScrollView } from 'react-native'
 import RNPickerSelect from 'react-native-picker-select'
 import { router, Stack, useLocalSearchParams } from 'expo-router'
 import { useEffect, useState } from 'react'
@@ -169,95 +169,97 @@ const Form = (): JSX.Element => {
   return (
     <>
     <Stack.Screen options={{ headerShown: true, title: '予約条件入力', ...headerLeft }} />
-    <View style={styles.container}>
-      <Text style={styles.platform}>{platform}</Text>
-      <View style={styles.inner}>
-        <Text>オークションID</Text>
-        {auctionIdInvalidMessage !== '' && (<Text style={styles.invalidMessage}>{auctionIdInvalidMessage}</Text>)}
-        <TextInput
-          style={validAuctionId ? styles.input : styles.invalidInput}
-          value={auctionId}
-          keyboardType="web-search"
-          onChangeText={auctionId => { setAuctionId(auctionId) }}
-          // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-          onBlur={async () => { await checkProd() }}
-        />
-        <View style={styles.productTitle}>
-          {
-          loding
-            ? (<Text>検索中<ActivityIndicator /></Text>)
-            : (
-              <View>
-                <Text>商品名: {prodTitle}</Text>
-                <Text>現在価格: {prodCurerntPrice}</Text>
-                <Text>終了日時: {closeTimeString}</Text>
-              </View>
-              )
+    <ScrollView>
+      <View style={styles.container}>
+        <Text style={styles.platform}>{platform}</Text>
+        <View style={styles.inner}>
+          <Text>オークションID</Text>
+          {auctionIdInvalidMessage !== '' && (<Text style={styles.invalidMessage}>{auctionIdInvalidMessage}</Text>)}
+          <TextInput
+            style={validAuctionId ? styles.input : styles.invalidInput}
+            value={auctionId}
+            keyboardType="web-search"
+            onChangeText={auctionId => { setAuctionId(auctionId) }}
+            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+            onBlur={async () => { await checkProd() }}
+          />
+          <View style={styles.productTitle}>
+            {
+            loding
+              ? (<Text>検索中<ActivityIndicator /></Text>)
+              : (
+                <View>
+                  <Text>商品名: {prodTitle}</Text>
+                  <Text>現在価格: {prodCurerntPrice}</Text>
+                  <Text>終了日時: {closeTimeString}</Text>
+                </View>
+                )
+            }
+          </View>
+          { userPlan === 0 && // 無料プランの場合
+            <>
+            <Text>入札金額</Text>
+            {bidAmountInvalidMessage !== '' && (<Text style={styles.invalidMessage}>{bidAmountInvalidMessage}</Text>)}
+            <TextInput
+              style={validBidAmount ? styles.input : styles.invalidInput}
+              value={bidAmount}
+              keyboardType="number-pad"
+              returnKeyType={'done'}
+              onChangeText={input => { setBidAmount(isNaN(Number(input)) ? bidAmount : input) }}
+              onFocus={() => { setBidAmount(convertFromCurrency(bidAmount)) }}
+              onBlur={() => {
+                checkAmount(bidAmount, setValidBidAmount, setBidAmountInvalidMessage)
+                setBidAmount(convertToCurrency(bidAmount))
+              }}
+            />
+            </>
           }
+          { userPlan > 0 && // 有料プランの場合
+            <>
+            <Text>初回入札金額</Text>
+            {bidFirstAmountInvalidMessage !== '' && (<Text style={styles.invalidMessage}>{bidFirstAmountInvalidMessage}</Text>)}
+            <TextInput
+              style={validBidFirstAmount ? styles.input : styles.invalidInput}
+              value={bidFirstAmount}
+              keyboardType="number-pad"
+              onChangeText={input => { setBidFirstAmount(isNaN(Number(input)) ? bidFirstAmount : input) }}
+              returnKeyType={'done'}
+              onFocus={() => { setBidFirstAmount(convertFromCurrency(bidFirstAmount)) }}
+              onBlur={() => {
+                checkAmount(bidFirstAmount, setValidBidFirstAmount, setBidFirstAmountInvalidMessage)
+                setBidFirstAmount(convertToCurrency(bidFirstAmount))
+              }}
+            />
+            <Text>上限金額</Text>
+            {maxAmountInvalidMessage !== '' && (<Text style={styles.invalidMessage}>{maxAmountInvalidMessage}</Text>)}
+            <TextInput
+              style={validMaxAmount ? styles.input : styles.invalidInput}
+              value={maxAmount}
+              keyboardType="number-pad"
+              onChangeText={input => { setMaxAmount(isNaN(Number(input)) ? maxAmount : input) }}
+              returnKeyType={'done'}
+              onFocus={() => { setMaxAmount(convertFromCurrency(maxAmount)) }}
+              onBlur={() => {
+                checkMaxAmount()
+                setMaxAmount(convertToCurrency(maxAmount))
+              }}
+            />
+            </>
+          }
+          <Text>入札タイミング</Text>
+          <RNPickerSelect
+            value={selectSeconds}
+            onValueChange={(value) => { setselectSeconds(value) }}
+            items={secondsItems}
+            placeholder={{ label: '秒前', value: '' }}
+            style={pickerSelectStyles}
+            useNativeAndroidPickerStyle={false}
+            Icon={() => (<Text style={{ position: 'absolute', right: 10, top: 8, fontSize: 18, color: '#789' }}>▼</Text>)}
+          />
+          <CustomButton label='確認' onPress={handlePress} disabled={!validForm}/>
         </View>
-        { userPlan === 0 && // 無料プランの場合
-          <>
-          <Text>入札金額</Text>
-          {bidAmountInvalidMessage !== '' && (<Text style={styles.invalidMessage}>{bidAmountInvalidMessage}</Text>)}
-          <TextInput
-            style={validBidAmount ? styles.input : styles.invalidInput}
-            value={bidAmount}
-            keyboardType="number-pad"
-            returnKeyType={'done'}
-            onChangeText={input => { setBidAmount(isNaN(Number(input)) ? bidAmount : input) }}
-            onFocus={() => { setBidAmount(convertFromCurrency(bidAmount)) }}
-            onBlur={() => {
-              checkAmount(bidAmount, setValidBidAmount, setBidAmountInvalidMessage)
-              setBidAmount(convertToCurrency(bidAmount))
-            }}
-          />
-          </>
-        }
-        { userPlan > 0 && // 有料プランの場合
-          <>
-          <Text>初回入札金額</Text>
-          {bidFirstAmountInvalidMessage !== '' && (<Text style={styles.invalidMessage}>{bidFirstAmountInvalidMessage}</Text>)}
-          <TextInput
-            style={validBidFirstAmount ? styles.input : styles.invalidInput}
-            value={bidFirstAmount}
-            keyboardType="number-pad"
-            onChangeText={input => { setBidFirstAmount(isNaN(Number(input)) ? bidFirstAmount : input) }}
-            returnKeyType={'done'}
-            onFocus={() => { setBidFirstAmount(convertFromCurrency(bidFirstAmount)) }}
-            onBlur={() => {
-              checkAmount(bidFirstAmount, setValidBidFirstAmount, setBidFirstAmountInvalidMessage)
-              setBidFirstAmount(convertToCurrency(bidFirstAmount))
-            }}
-          />
-          <Text>上限金額</Text>
-          {maxAmountInvalidMessage !== '' && (<Text style={styles.invalidMessage}>{maxAmountInvalidMessage}</Text>)}
-          <TextInput
-            style={validMaxAmount ? styles.input : styles.invalidInput}
-            value={maxAmount}
-            keyboardType="number-pad"
-            onChangeText={input => { setMaxAmount(isNaN(Number(input)) ? maxAmount : input) }}
-            returnKeyType={'done'}
-            onFocus={() => { setMaxAmount(convertFromCurrency(maxAmount)) }}
-            onBlur={() => {
-              checkMaxAmount()
-              setMaxAmount(convertToCurrency(maxAmount))
-            }}
-          />
-          </>
-        }
-        <Text>入札タイミング</Text>
-        <RNPickerSelect
-          value={selectSeconds}
-          onValueChange={(value) => { setselectSeconds(value) }}
-          items={secondsItems}
-          placeholder={{ label: '秒前', value: '' }}
-          style={pickerSelectStyles}
-          useNativeAndroidPickerStyle={false}
-          Icon={() => (<Text style={{ position: 'absolute', right: 10, top: 8, fontSize: 18, color: '#789' }}>▼</Text>)}
-        />
-        <CustomButton label='確認' onPress={handlePress} disabled={!validForm}/>
       </View>
-    </View>
+    </ScrollView>
     </>
   )
 }
