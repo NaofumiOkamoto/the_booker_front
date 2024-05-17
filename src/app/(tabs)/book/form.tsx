@@ -4,7 +4,7 @@ import RNPickerSelect from 'react-native-picker-select'
 import { router, Stack, useLocalSearchParams } from 'expo-router'
 import { useEffect, useState } from 'react'
 import CustomButton from '../../../components/Button'
-import { convertNum, convertToCurrency, convertFromCurrency, convertStringToDate } from '../../lib/function'
+import { convertNum, convertToCurrency, convertFromCurrency } from '../../lib/function'
 import axios from 'axios'
 import { useNavigation } from '@react-navigation/native'
 
@@ -13,7 +13,6 @@ const Form = (): JSX.Element => {
 
   // 入力情報
   const [auctionId, setAuctionId] = useState('')
-  const [bidAmount, setBidAmount] = useState('')
   const [bidFirstAmount, setBidFirstAmount] = useState('')
   const [maxAmount, setMaxAmount] = useState('')
   const [selectSeconds, setselectSeconds] = useState('5')
@@ -22,8 +21,6 @@ const Form = (): JSX.Element => {
   const [validForm, setValidForm] = useState(false)
   const [validAuctionId, setValidAuctionId] = useState(true)
   const [auctionIdInvalidMessage, setAuctionIdInvalidMessage] = useState('')
-  const [validBidAmount, setValidBidAmount] = useState(true)
-  const [bidAmountInvalidMessage, setBidAmountInvalidMessage] = useState('')
   const [validBidFirstAmount, setValidBidFirstAmount] = useState(true)
   const [bidFirstAmountInvalidMessage, setBidFirstAmountInvalidMessage] = useState('')
   const [validMaxAmount, setValidMaxAmount] = useState(true)
@@ -34,7 +31,7 @@ const Form = (): JSX.Element => {
   const [prodCurerntPrice, setProdCurerntPrice] = useState('')
   const [prodCurerntPriceNum, setProdCurerntPriceNum] = useState(0)
   const [closeTimeString, setCloseTimeString] = useState('')
-  const [closeTime, setCloseTime] = useState<Date | null>(null)
+  // const [closeTime, setCloseTime] = useState<Date | null>(null)
 
   const [loding, setLoding] = useState(false)
   const params = useLocalSearchParams()
@@ -44,17 +41,16 @@ const Form = (): JSX.Element => {
     let valid = false
     if (userPlan === 0) {
       valid = !loding &&
-      !(auctionId === '') && validAuctionId &&
-      !(bidAmount === '') && validBidAmount
+      !(auctionId === '') && validAuctionId
     } else {
       valid = !loding &&
       !(auctionId === '') && validAuctionId &&
       !(bidFirstAmount === '') && validBidFirstAmount &&
       !(maxAmount === '') && validMaxAmount
     }
-    console.log(`${validAuctionId}, ${validBidAmount},${validBidFirstAmount},${validMaxAmount}`)
+    console.log(`${validAuctionId},${validBidFirstAmount},${validMaxAmount}`)
     setValidForm(valid)
-  }, [validAuctionId, validBidAmount, validBidFirstAmount, validMaxAmount, bidAmount, bidFirstAmount, maxAmount])
+  }, [validAuctionId, validBidFirstAmount, validMaxAmount, bidFirstAmount, maxAmount])
 
   // 何秒前
   const secondsItems = []
@@ -93,14 +89,11 @@ const Form = (): JSX.Element => {
         const currentPriceNum = convertNum(currentPrice)
         console.log(`${success}: ${title}: ${currentPrice}: ${closeTimeString}`)
         setCloseTimeString(closeTimeString)
-        setCloseTime(convertStringToDate(closeTimeString))
+        // setCloseTime(convertStringToDate(closeTimeString))
         setProdTitle(title)
         setProdCurerntPrice(currentPrice)
         setProdCurerntPriceNum(currentPriceNum)
         setAuctionIdInvalidMessage('')
-        if (bidAmount !== '') {
-          setValidBidAmount(currentPriceNum < convertNum(bidAmount))
-        }
       } else {
         setAuctionIdInvalidMessage('商品が存在しません')
       }
@@ -148,7 +141,7 @@ const Form = (): JSX.Element => {
     router.push(
       {
         pathname: '/book/confirm',
-        params: { auctionId, bidAmount, bidFirstAmount, maxAmount, selectSeconds, prodTitle, closeTime }
+        params: { auctionId, bidFirstAmount, maxAmount, selectSeconds, prodTitle, closeTimeString }
       }
     )
   }
@@ -196,24 +189,6 @@ const Form = (): JSX.Element => {
                 )
             }
           </View>
-          { userPlan === 0 && // 無料プランの場合
-            <>
-            <Text>入札金額</Text>
-            {bidAmountInvalidMessage !== '' && (<Text style={styles.invalidMessage}>{bidAmountInvalidMessage}</Text>)}
-            <TextInput
-              style={validBidAmount ? styles.input : styles.invalidInput}
-              value={bidAmount}
-              keyboardType="number-pad"
-              returnKeyType={'done'}
-              onChangeText={input => { setBidAmount(isNaN(Number(input)) ? bidAmount : input) }}
-              onFocus={() => { setBidAmount(convertFromCurrency(bidAmount)) }}
-              onBlur={() => {
-                checkAmount(bidAmount, setValidBidAmount, setBidAmountInvalidMessage)
-                setBidAmount(convertToCurrency(bidAmount))
-              }}
-            />
-            </>
-          }
           { userPlan > 0 && // 有料プランの場合
             <>
             <Text>初回入札金額</Text>

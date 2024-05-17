@@ -1,24 +1,23 @@
 import { Stack, router, useLocalSearchParams } from 'expo-router'
 import { View, StyleSheet, Text } from 'react-native'
-import { convertNum } from '../../lib/function'
+import { convertNum, convertStringToDate } from '../../lib/function'
 import CustomButton from '../../../components/Button'
 import axios from 'axios'
 import dayjs from 'dayjs'
 
 const Confirm = (): JSX.Element => {
   const params = useLocalSearchParams()
-  const { auctionId, bidAmount, bidFirstAmount, maxAmount, selectSeconds, prodTitle, closeTime } = params
+  const { auctionId, bidFirstAmount, maxAmount, selectSeconds, prodTitle, closeTime } = params
   const handlePress = async (): Promise<void> => {
     const res = await axios.post('http://153.126.213.57:5001/book', {
       book: {
         user_id: 1,
         auction_id: auctionId,
         product_name: prodTitle,
-        bid_amount: bidAmount === '' ? null : convertNum(bidAmount as string),
         bid_first_amount: bidFirstAmount === '' ? null : convertNum(bidFirstAmount as string),
         max_amount: maxAmount === '' ? null : convertNum(maxAmount as string),
         seconds: selectSeconds,
-        close_time: dayjs(closeTime as unknown as Date).format('YYYY-MM-DD hh:mm:ss')
+        close_time: dayjs(convertStringToDate(closeTime as string)).format('YYYY-MM-DD hh:mm:ss')
         // close_time: closeTime
       }
     })
@@ -32,7 +31,6 @@ const Confirm = (): JSX.Element => {
     <View style={styles.container}>
       <View style={styles.inner}>
         <Text style={styles.column}>オークションID: { auctionId }</Text>
-        <Text style={styles.column}>入札金額: {bidAmount}</Text>
         <Text style={styles.column}>初回入札金額: {bidFirstAmount}</Text>
         <Text style={styles.column}>上限金額: {maxAmount}</Text>
         <Text style={styles.column}>{selectSeconds}秒前に入札</Text>
