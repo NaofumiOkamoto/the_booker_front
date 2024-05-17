@@ -174,9 +174,9 @@ const Form = (): JSX.Element => {
         <Text style={styles.platform}>{platform}</Text>
         <View style={styles.inner}>
           <Text>オークションID</Text>
-          {auctionIdInvalidMessage !== '' && (<Text style={styles.invalidMessage}>{auctionIdInvalidMessage}</Text>)}
+          {auctionIdInvalidMessage !== '' && !loding && (<Text style={styles.invalidMessage}>{auctionIdInvalidMessage}</Text>)}
           <TextInput
-            style={validAuctionId ? styles.input : styles.invalidInput}
+            style={validAuctionId || loding ? styles.input : styles.invalidInput}
             value={auctionId}
             keyboardType="web-search"
             onChangeText={auctionId => { setAuctionId(auctionId) }}
