@@ -1,6 +1,7 @@
 import { Stack, router } from 'expo-router'
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native'
 import { auth } from '../../../config'
+import PieChart from '../../../components/PieChart'
 
 const Index = (): JSX.Element => {
   const handlePress = (): void => {
@@ -9,6 +10,9 @@ const Index = (): JSX.Element => {
       params: { fromHome: true }
     })
   }
+  const numberOfReservationsAvailable = 30
+  const numberOfReservations = 10
+  const numberOfRest = numberOfReservationsAvailable - numberOfReservations
 
   return (
     <>
@@ -20,10 +24,13 @@ const Index = (): JSX.Element => {
       </View>
       <View style={styles.book_count}>
         <View>
-          <Text style={styles.book_graph}>円グラフ</Text>
+          <PieChart
+            numberOfRest={numberOfRest}
+            numberOfReservations={numberOfReservations}
+          />
         </View>
         <View>
-          <Text style={styles.book_text}>1/30件</Text>
+          <Text style={styles.book_text}>{`${numberOfReservations}/${numberOfReservationsAvailable}`}件</Text>
         </View>
       </View>
       <View style={styles.book_history_link}>
