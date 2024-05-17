@@ -46,7 +46,7 @@ const Index = (): JSX.Element => {
         <Text style={styles.list_item_text}>プラン</Text>
       </ TouchableOpacity>
       <TouchableOpacity style={styles.list_item} onPress={ () => { handlePress('yahoo_id') }}>
-        <Text style={styles.list_item_text}> Yahoo Id </Text>
+        <Text style={styles.list_item_text}>Yahoo Id </Text>
       </ TouchableOpacity>
       <TouchableOpacity style={styles.list_item} onPress={ () => { handlePress('manual') }}>
         <Text style={styles.list_item_text}>使い方</Text>

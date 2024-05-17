@@ -1,5 +1,13 @@
 export function convertNum (str: string): number {
-  const result = Number(str.replace(/¥/, '').replace(/,/g, '').replace(/円/, '').replace(/（税 \d+ 円）/, ''))
+  const result = Number(
+    str
+      .replace(/¥/, '')
+      .replace(/,/g, '')
+      .replace(/円/, '')
+      .replace(/（税 \d+ 円）/, '')
+      .replace(/（税込 \d+ 円）/, '')
+      .trim()
+  )
   return result
 }
 
