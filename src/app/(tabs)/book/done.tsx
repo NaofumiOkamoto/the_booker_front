@@ -1,4 +1,4 @@
-import { Stack, router } from 'expo-router'
+import { Stack, router, useLocalSearchParams } from 'expo-router'
 import { View, StyleSheet, Text } from 'react-native'
 // import { convertNum } from '../../lib/function'
 import CustomButton from '../../../components/Button'
@@ -10,8 +10,11 @@ const Done = (): JSX.Element => {
   // const { auctionId, bidAmount, bidFirstAmount, maxAmount, selectSeconds, prodTitle, closeTime } = params
   // const handlePress = async (): Promise<void> => {
   // }
+  const params = useLocalSearchParams()
+  const { platform } = params
+
   const handlePress = (pass: string): void => {
-    router.replace({ pathname: pass, params: { done: true } })
+    router.replace({ pathname: pass, params: { platform, done: true } })
   }
   return (
     <>

@@ -10,8 +10,10 @@ const Index = (): JSX.Element => {
       params: { fromHome: true }
     })
   }
-  const numberOfReservationsAvailable = 30
-  const numberOfReservations = 10
+  const numberOfReservationsAvailable = 30 // 予約可能件数
+  const numberOfReservationsYahoo = 10 // 予約数
+  const numberOfReservationsEbay = 10 // 予約数
+  const numberOfReservations = numberOfReservationsYahoo + numberOfReservationsEbay // 予約数
   const numberOfRest = numberOfReservationsAvailable - numberOfReservations
 
   return (
@@ -26,11 +28,14 @@ const Index = (): JSX.Element => {
         <View>
           <PieChart
             numberOfRest={numberOfRest}
-            numberOfReservations={numberOfReservations}
+            numberOfReservationsYahoo={numberOfReservationsYahoo}
+            numberOfReservationsEbay={numberOfReservationsEbay}
           />
         </View>
         <View>
           <Text style={styles.book_text}>{`${numberOfReservations}/${numberOfReservationsAvailable}`}件</Text>
+          <Text style={styles.book_text_platform}>ヤフオク {numberOfReservationsYahoo}件</Text>
+          <Text style={styles.book_text_platform}>eBay {numberOfReservationsEbay}件</Text>
         </View>
       </View>
       <View style={styles.book_history_link}>
@@ -70,7 +75,11 @@ const styles = StyleSheet.create({
     fontSize: 40
   },
   book_text: {
-    fontSize: 40
+    fontSize: 40,
+    marginBottom: 20
+  },
+  book_text_platform: {
+    fontSize: 25
   },
   book_history_link: {
     marginTop: 150,

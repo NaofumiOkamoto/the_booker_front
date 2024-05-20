@@ -140,7 +140,7 @@ const Form = (): JSX.Element => {
     router.push(
       {
         pathname: '/book/confirm',
-        params: { auctionId, bidFirstAmount, maxAmount, selectSeconds, prodTitle, closeTimeString }
+        params: { auctionId, bidFirstAmount, maxAmount, selectSeconds, prodTitle, closeTimeString, platform }
       }
     )
   }
@@ -165,7 +165,7 @@ const Form = (): JSX.Element => {
       <View style={styles.container}>
         <Text style={styles.platform}>{platform}</Text>
         <View style={styles.inner}>
-          <Text>オークションID</Text>
+          <Text style={styles.list_label}>オークションID</Text>
           {auctionIdInvalidMessage !== '' && !loding && (<Text style={styles.invalidMessage}>{auctionIdInvalidMessage}</Text>)}
           <TextInput
             style={validAuctionId || loding ? styles.input : styles.invalidInput}
@@ -190,7 +190,7 @@ const Form = (): JSX.Element => {
           </View>
           { userPlan > 0 && // 有料プランの場合
             <>
-            <Text>初回入札金額</Text>
+            <Text style={styles.list_label}>初回入札金額</Text>
             {bidFirstAmountInvalidMessage !== '' && (<Text style={styles.invalidMessage}>{bidFirstAmountInvalidMessage}</Text>)}
             <TextInput
               style={validBidFirstAmount ? styles.input : styles.invalidInput}
@@ -204,7 +204,7 @@ const Form = (): JSX.Element => {
                 setBidFirstAmount(convertToCurrency(bidFirstAmount))
               }}
             />
-            <Text>上限金額</Text>
+            <Text style={styles.list_label}>上限金額</Text>
             {maxAmountInvalidMessage !== '' && (<Text style={styles.invalidMessage}>{maxAmountInvalidMessage}</Text>)}
             <TextInput
               style={validMaxAmount ? styles.input : styles.invalidInput}
@@ -218,9 +218,11 @@ const Form = (): JSX.Element => {
                 setMaxAmount(convertToCurrency(maxAmount))
               }}
             />
+            <Text>※他の入札者がいてもユーザー様が高額入札者になるよう設定した上限金額まで最小単位で自動入札いたします。</Text>
+            <Text>※他の入札者が現れて自動延長された後でも、設定した残り秒数まで待って設定した上限金額まで入札を繰り返します。常に残り秒数を確認する手間を省けます。終了ギリギリで入札し続けることによって、他の入札者は終了時間を常に気にしていないといけない状況になる、他の入札者が離脱するなどが考えられるため、落札できる可能性を上げます。</Text>
             </>
           }
-          <Text>入札タイミング</Text>
+          <Text style={styles.list_label}>入札タイミング</Text>
           <RNPickerSelect
             value={selectSeconds}
             onValueChange={(value) => { setselectSeconds(value) }}
@@ -272,13 +274,15 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 24
   },
+  list_label: {
+    marginTop: 20
+  },
   input: {
     borderWidth: 1,
     borderColor: '#DDD',
     height: 48,
     fontSize: 16,
     padding: 8,
-    marginBottom: 16,
     width: '90%'
   },
   disabledInput: {

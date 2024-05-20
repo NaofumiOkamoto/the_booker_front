@@ -12,13 +12,15 @@ interface ChartData {
 }
 
 interface Props {
-  numberOfReservations: number
+  numberOfReservationsYahoo: number
+  numberOfReservationsEbay: number
   numberOfRest: number
 }
 
 const PieChartWithLabels = (props: Props): JSX.Element => {
   const data: ChartData[] = [
-    { key: '予約済み', amount: props.numberOfReservations, svg: { fill: '#600080' } },
+    { key: 'ヤフオク', amount: props.numberOfReservationsYahoo, svg: { fill: '#600080' } },
+    { key: 'eBay', amount: props.numberOfReservationsEbay, svg: { fill: '#600080' } },
     { key: '残り', amount: props.numberOfRest, svg: { fill: '#9900cc' } }
   ]
 
