@@ -5,9 +5,10 @@ import { useEffect, useState } from 'react'
 import { View, StyleSheet, Text, ScrollView } from 'react-native'
 import { convertToCurrency } from '../../lib/function'
 
-interface Book {
+export interface Book {
   id: number
   auction_id: string
+  platform_name: 'ヤフオク' | 'ebay'
   product_name: string
   close_time: Date
   bid_first_amount: number

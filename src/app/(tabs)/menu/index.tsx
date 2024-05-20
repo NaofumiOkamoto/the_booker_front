@@ -4,8 +4,8 @@ import LogOutButton from '../../../components/LogOutButton'
 
 const Index = (): JSX.Element => {
   const params = useLocalSearchParams()
-  const { fromHome } = params
-  if (fromHome) {
+  const { from } = params
+  if (from === 'Home') {
     router.push(
       {
         pathname: '/menu/book_history'

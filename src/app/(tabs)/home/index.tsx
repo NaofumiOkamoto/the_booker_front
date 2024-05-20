@@ -2,17 +2,40 @@ import { Stack, router } from 'expo-router'
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native'
 import { auth } from '../../../config'
 import PieChart from '../../../components/PieChart'
+import axios from 'axios'
+import { useEffect, useState } from 'react'
+import { type Book } from '../menu/book_history'
 
 const Index = (): JSX.Element => {
+  console.log('ホーム')
+  useEffect(() => {
+    void (async (): Promise<void> => {
+      try {
+        const res = await axios.get('http://153.126.213.57:5001/book?user_id=1')
+        const yahoo = res.data.books.filter((b: Book) => b.platform_name === 'ヤフオク')
+        const ebay = res.data.books.filter((b: Book) => b.platform_name === 'ebay')
+        setYahoo(yahoo)
+        setEbay(ebay)
+      } catch (e) {
+        console.log('予約履歴取得時エラー: ', e)
+      }
+    })()
+  }, [])
+
+  const [yahoo, setYahoo] = useState([])
+  const [ebay, setEbay] = useState([])
+  // const [now, setNow] = useState(new Date())
+  // setNow(new Date())
+
   const handlePress = (): void => {
     router.replace({
       pathname: 'menu',
-      params: { fromHome: true }
+      params: { from: 'Home' }
     })
   }
   const numberOfReservationsAvailable = 30 // 予約可能件数
-  const numberOfReservationsYahoo = 10 // 予約数
-  const numberOfReservationsEbay = 10 // 予約数
+  const numberOfReservationsYahoo = yahoo.length // 予約数
+  const numberOfReservationsEbay = ebay.length // 予約数
   const numberOfReservations = numberOfReservationsYahoo + numberOfReservationsEbay // 予約数
   const numberOfRest = numberOfReservationsAvailable - numberOfReservations
 
