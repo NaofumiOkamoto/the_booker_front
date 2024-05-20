@@ -19,7 +19,7 @@ const Index = (): JSX.Element => {
     router.push(
       {
         pathname: '/book/form',
-        params: { platform: selectedPlatform }
+        params: { platform: option }
       }
     )
   }
