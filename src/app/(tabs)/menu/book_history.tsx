@@ -64,7 +64,10 @@ const styles = StyleSheet.create({
   },
   list: {
     marginTop: 20,
-    width: '90%'
+    paddingBottom: 15,
+    width: '90%',
+    borderBottomWidth: 1,
+    borderColor: '#DDD'
   },
   list_text: {
     fontSize: 15

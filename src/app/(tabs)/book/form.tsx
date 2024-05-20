@@ -48,7 +48,6 @@ const Form = (): JSX.Element => {
       !(bidFirstAmount === '') && validBidFirstAmount &&
       !(maxAmount === '') && validMaxAmount
     }
-    console.log(`${validAuctionId},${validBidFirstAmount},${validMaxAmount}`)
     setValidForm(valid)
   }, [validAuctionId, validBidFirstAmount, validMaxAmount, bidFirstAmount, maxAmount])
 
