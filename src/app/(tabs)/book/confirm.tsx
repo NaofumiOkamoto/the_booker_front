@@ -1,6 +1,7 @@
 import { Stack, router, useLocalSearchParams } from 'expo-router'
 import { View, StyleSheet, Text } from 'react-native'
 import { convertNum, convertStringToDate } from '../../lib/function'
+import { auth } from '../../../config'
 import CustomButton from '../../../components/Button'
 import axios from 'axios'
 import dayjs from 'dayjs'
@@ -11,7 +12,7 @@ const Confirm = (): JSX.Element => {
   const handlePress = async (): Promise<void> => {
     const res = await axios.post('http://153.126.213.57:5001/book', {
       book: {
-        user_id: 1,
+        user_id: auth.currentUser?.uid,
         platform_name: platform,
         auction_id: auctionId,
         product_name: prodTitle,
@@ -19,16 +20,17 @@ const Confirm = (): JSX.Element => {
         max_amount: maxAmount === '' ? null : convertNum(maxAmount as string),
         seconds: selectSeconds,
         close_time: dayjs(convertStringToDate(closeTimeString as string)).format('YYYY-MM-DD hh:mm:ss')
-        // close_time: closeTime
       }
     })
     console.log('post res: ', res)
-    router.replace(
-      {
-        pathname: '/(tabs)/book/done',
-        params: { platform }
-      }
-    )
+    if (res.status === 204) {
+      router.replace(
+        {
+          pathname: '/(tabs)/book/done',
+          params: { platform }
+        }
+      )
+    }
   }
 
   return (

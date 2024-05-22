@@ -24,7 +24,7 @@ const ToggleSwitch: React.FC<ToggleSwitchProps> = ({ selectedValue, onToggle }) 
 
   const translateX = animation.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, 150] // 幅を調整する
+    outputRange: [5, 150] // 幅を調整する
   })
 
   return (

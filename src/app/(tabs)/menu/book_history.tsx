@@ -1,5 +1,6 @@
 import axios from 'axios'
 import dayjs from 'dayjs'
+import { auth } from '../../../config'
 import { Stack } from 'expo-router'
 import { useEffect, useState } from 'react'
 import { View, StyleSheet, Text, ScrollView } from 'react-native'
@@ -20,10 +21,17 @@ const BookHistory = (): JSX.Element => {
   const [books, setBooks] = useState<Book[]>([])
   const [selectedValue, setSelectedValue] = useState('予約中')
 
+  const filteredBooks =
+    books?.filter(b => {
+      const now = dayjs().add(9, 'h')
+      return selectedValue === '予約中'
+        ? dayjs(b.close_time) > now
+        : dayjs(b.close_time) < now
+    })
   useEffect(() => {
     void (async (): Promise<void> => {
       try {
-        const res = await axios.get('http://153.126.213.57:5001/book?user_id=1')
+        const res = await axios.get(`http://153.126.213.57:5001/book?user_id=${auth.currentUser?.uid}`)
         const books = res.data.books
         console.log('books.length', books.length)
         setBooks(books)
@@ -32,7 +40,6 @@ const BookHistory = (): JSX.Element => {
       }
     })()
   }, [])
-  console.log(selectedValue)
 
   return (
     <>
@@ -41,14 +48,9 @@ const BookHistory = (): JSX.Element => {
       <ScrollView style={styles.body_text}>
         <ToggleSwitch selectedValue={selectedValue} onToggle={setSelectedValue} />
       <View>
-        { books?.filter(b => {
-          const now = dayjs().add(9, 'h')
-          console.log(now)
-          return selectedValue === '予約中'
-            ? dayjs(b.close_time) > now
-            : dayjs(b.close_time) < now
-        }).map(book => {
-          return (
+        {(filteredBooks.length > 0)
+          ? filteredBooks.map(book => {
+            return (
             <View style={styles.list} key={book.id}>
               <Text style={styles.list_text}>{book.product_name}</Text>
               <Text style={styles.list_text}>オークションID: {book.auction_id}</Text>
@@ -57,8 +59,9 @@ const BookHistory = (): JSX.Element => {
               <Text style={styles.list_text}>上限金額: {convertToCurrency(String(book.max_amount))}</Text>
               <Text style={styles.list_text}>入札時間: 終了{book.seconds}秒前</Text>
             </View>
-          )
-        }) }
+            )
+          })
+          : <View><Text>存在しません</Text></View>}
       </View>
       </ScrollView>
     </View>

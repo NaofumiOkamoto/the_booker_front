@@ -27,7 +27,7 @@ export function convertFromCurrency (num: string): string {
 
 export function convertStringToDate (dateString: string): Date | null {
   // 正規表現を使って文字列が指定されたフォーマットに従っているかをチェック
-  const regex = /^\d{4}\.\d{2}\.\d{2}（[日月火水木金土]）\d{2}:\d{2}$/
+  const regex = /^\d{4}\.\d{2}\.\d{2}（[日月火水木金土]）\d{2}:\d{2}:\d{2}$/
   if (!regex.test(dateString)) {
     console.error('Invalid date format.')
     return null
@@ -37,9 +37,9 @@ export function convertStringToDate (dateString: string): Date | null {
   // 年月日の各要素を取得
   const [year, month, day] = datePart.split('.').map(Number)
   // 時刻の各要素を取得
-  const [hour, minute] = timePart.split(':').map(Number)
+  const [hour, minute, second] = timePart.split(':').map(Number)
   // Dateオブジェクトを生成して返す
-  return new Date(year, month - 1, day, hour, minute)
+  return new Date(year, month - 1, day, hour, minute, second)
 }
 
 export function authError (code: string): string {

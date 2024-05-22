@@ -6,24 +6,41 @@ import Accordion from '../../../components/Accordion'
 import Manual from '../../../components/Manual'
 import PriceList from '../../../components/PriceList'
 import axios from 'axios'
-import { useEffect, useState } from 'react'
+import { useState, useCallback } from 'react'
 import { type Book } from '../menu/book_history'
+import { useFocusEffect } from '@react-navigation/native'
 
 const Index = (): JSX.Element => {
-  console.log('ホーム')
-  useEffect(() => {
-    void (async (): Promise<void> => {
-      try {
-        const res = await axios.get('http://153.126.213.57:5001/book?user_id=1')
-        const yahoo = res.data.books.filter((b: Book) => b.platform_name === 'ヤフオク')
-        const ebay = res.data.books.filter((b: Book) => b.platform_name === 'ebay')
-        setYahoo(yahoo)
-        setEbay(ebay)
-      } catch (e) {
-        console.log('予約履歴取得時エラー: ', e)
+  // useEffect(() => {
+  //   void (async (): Promise<void> => {
+  //     try {
+  //       const res = await axios.get(`http://153.126.213.57:5001/book?user_id=${auth.currentUser?.uid}`)
+  //       const yahoo = res.data.books.filter((b: Book) => b.platform_name === 'ヤフオク')
+  //       const ebay = res.data.books.filter((b: Book) => b.platform_name === 'ebay')
+  //       setYahoo(yahoo)
+  //       setEbay(ebay)
+  //     } catch (e) {
+  //       console.log('予約履歴取得時エラー: ', e)
+  //     }
+  //   })()
+  // }, [])
+  useFocusEffect(
+    useCallback(() => {
+      const fetchData = async (): Promise<void> => {
+        try {
+          const res = await axios.get(`http://153.126.213.57:5001/book?user_id=${auth.currentUser?.uid}`)
+          const yahooBooks = res.data.books.filter((b: Book) => b.platform_name === 'ヤフオク')
+          const ebayBooks = res.data.books.filter((b: Book) => b.platform_name === 'ebay')
+          setYahoo(yahooBooks)
+          setEbay(ebayBooks)
+        } catch (e) {
+          console.log('予約履歴取得時エラー: ', e)
+        }
       }
-    })()
-  }, [])
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      fetchData()
+    }, [])
+  )
 
   const [yahoo, setYahoo] = useState([])
   const [ebay, setEbay] = useState([])
