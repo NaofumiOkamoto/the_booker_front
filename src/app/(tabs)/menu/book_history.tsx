@@ -4,6 +4,7 @@ import { Stack } from 'expo-router'
 import { useEffect, useState } from 'react'
 import { View, StyleSheet, Text, ScrollView } from 'react-native'
 import { convertToCurrency } from '../../lib/function'
+import ToggleSwitch from '../../../components/ToggleSwitch'
 
 export interface Book {
   id: number
@@ -17,26 +18,36 @@ export interface Book {
 }
 const BookHistory = (): JSX.Element => {
   const [books, setBooks] = useState<Book[]>([])
+  const [selectedValue, setSelectedValue] = useState('予約中')
+
   useEffect(() => {
     void (async (): Promise<void> => {
       try {
         const res = await axios.get('http://153.126.213.57:5001/book?user_id=1')
         const books = res.data.books
+        console.log('books.length', books.length)
         setBooks(books)
       } catch (e) {
         console.log('予約履歴取得時エラー: ', e)
       }
     })()
   }, [])
-  console.log('after: books', books)
+  console.log(selectedValue)
 
   return (
     <>
     <Stack.Screen options={{ headerShown: true, title: '予約履歴' }} />
     <View style={styles.container}>
       <ScrollView style={styles.body_text}>
+        <ToggleSwitch selectedValue={selectedValue} onToggle={setSelectedValue} />
       <View>
-        { books?.map(book => {
+        { books?.filter(b => {
+          const now = dayjs().add(9, 'h')
+          console.log(now)
+          return selectedValue === '予約中'
+            ? dayjs(b.close_time) > now
+            : dayjs(b.close_time) < now
+        }).map(book => {
           return (
             <View style={styles.list} key={book.id}>
               <Text style={styles.list_text}>{book.product_name}</Text>
