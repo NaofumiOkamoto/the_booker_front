@@ -30,7 +30,7 @@ const Index = (): JSX.Element => {
   // const [now, setNow] = useState(new Date())
   // setNow(new Date())
 
-  const handlePress = (pass: 'book_history' | 'buy_history'): void => {
+  const handlePress = (pass: 'book_history' | 'buy_history' | 'plan'): void => {
     router.replace({
       pathname: 'menu',
       params: { redirectPass: pass }
@@ -50,6 +50,9 @@ const Index = (): JSX.Element => {
         <View style={styles.plan}>
           <Text style={styles.current_user}>{auth.currentUser?.email}</Text>
           <Text style={styles.plan_text}>xxxxxxプラン</Text>
+          <TouchableOpacity onPress={ () => { handlePress('plan') }}>
+            <Text style={styles.book_history_link_text}>プランを変更する</Text>
+          </TouchableOpacity>
         </View>
         <View style={styles.book_count}>
           <View>
