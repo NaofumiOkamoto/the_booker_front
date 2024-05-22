@@ -1,7 +1,10 @@
 import { Stack, router } from 'expo-router'
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native'
+import { View, StyleSheet, Text, TouchableOpacity, ScrollView } from 'react-native'
 import { auth } from '../../../config'
 import PieChart from '../../../components/PieChart'
+import Accordion from '../../../components/Accordion'
+import Manual from '../../../components/Manual'
+import PriceList from '../../../components/PriceList'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { type Book } from '../menu/book_history'
@@ -27,10 +30,10 @@ const Index = (): JSX.Element => {
   // const [now, setNow] = useState(new Date())
   // setNow(new Date())
 
-  const handlePress = (): void => {
+  const handlePress = (pass: 'book_history' | 'buy_history'): void => {
     router.replace({
       pathname: 'menu',
-      params: { from: 'Home' }
+      params: { redirectPass: pass }
     })
   }
   const numberOfReservationsAvailable = 30 // 予約可能件数
@@ -42,31 +45,48 @@ const Index = (): JSX.Element => {
   return (
     <>
     <Stack.Screen options={{ headerShown: true, title: 'ホーム' }} />
+    <ScrollView>
     <View style={styles.container}>
-      <View style={styles.plan}>
-        <Text style={styles.current_user}>{auth.currentUser?.email}</Text>
-        <Text style={styles.plan_text}>xxxxxxプラン</Text>
-      </View>
-      <View style={styles.book_count}>
-        <View>
-          <PieChart
-            numberOfRest={numberOfRest}
-            numberOfReservationsYahoo={numberOfReservationsYahoo}
-            numberOfReservationsEbay={numberOfReservationsEbay}
-          />
+        <View style={styles.plan}>
+          <Text style={styles.current_user}>{auth.currentUser?.email}</Text>
+          <Text style={styles.plan_text}>xxxxxxプラン</Text>
         </View>
-        <View>
-          <Text style={styles.book_text}>{`${numberOfReservations}/${numberOfReservationsAvailable}`}件</Text>
-          <Text style={styles.book_text_platform}>ヤフオク {numberOfReservationsYahoo}件</Text>
-          <Text style={styles.book_text_platform}>eBay {numberOfReservationsEbay}件</Text>
+        <View style={styles.book_count}>
+          <View>
+            <PieChart
+              numberOfRest={numberOfRest}
+              numberOfReservationsYahoo={numberOfReservationsYahoo}
+              numberOfReservationsEbay={numberOfReservationsEbay}
+            />
+          </View>
+          <View>
+            <Text style={styles.book_text}>{`${numberOfReservations}/${numberOfReservationsAvailable}`}件</Text>
+            <Text style={styles.book_text_platform}>ヤフオク {numberOfReservationsYahoo}件</Text>
+            <Text style={styles.book_text_platform}>eBay {numberOfReservationsEbay}件</Text>
+          </View>
         </View>
+        <View style={styles.book_history_link}>
+          <TouchableOpacity onPress={ () => { handlePress('book_history') }}>
+            <Text style={styles.book_history_link_text}>予約履歴を見る</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.buy_history}>
+          <Text style={styles.buy_history_text}> 今月の購入金額: {}件 </Text>
+          <Text style={styles.buy_history_text}> 今月の購入件数: {}件 </Text>
+        </View>
+        <View style={styles.book_history_link}>
+          <TouchableOpacity onPress={ () => { handlePress('buy_history') }}>
+            <Text style={styles.book_history_link_text}>購入履歴を見る</Text>
+          </TouchableOpacity>
+        </View>
+        <Accordion title='使い方'>
+          <Manual />
+        </Accordion>
+        <Accordion title='料金表'>
+          <PriceList />
+        </Accordion>
       </View>
-      <View style={styles.book_history_link}>
-        <TouchableOpacity onPress={handlePress}>
-          <Text style={styles.book_history_link_text}>予約履歴を見る</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+    </ScrollView>
     </>
   )
 }
@@ -74,10 +94,11 @@ const Index = (): JSX.Element => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center'
+    alignItems: 'center',
+    marginBottom: 50
   },
   plan: {
-    margin: 60,
+    marginTop: 60,
     textAlign: 'center'
   },
   current_user: {
@@ -105,7 +126,7 @@ const styles = StyleSheet.create({
     fontSize: 25
   },
   book_history_link: {
-    marginTop: 150,
+    marginTop: 70,
     padding: 10,
     backgroundColor: '#dcdcdc',
     borderRadius: 10,
@@ -114,7 +135,15 @@ const styles = StyleSheet.create({
   book_history_link_text: {
     fontSize: 20,
     textAlign: 'center'
+  },
+  buy_history: {
+    marginTop: 90
+  },
+  buy_history_text: {
+    fontSize: 25,
+    marginTop: 5
   }
+
 })
 
 export default Index

@@ -4,11 +4,13 @@ import LogOutButton from '../../../components/LogOutButton'
 
 const Index = (): JSX.Element => {
   const params = useLocalSearchParams()
-  const { from } = params
-  if (from === 'Home') {
+  const { redirectPass } = params
+  // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+  if (redirectPass) {
     router.push(
       {
-        pathname: '/menu/book_history'
+        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+        pathname: `/menu/${redirectPass}`
       }
     )
   }
