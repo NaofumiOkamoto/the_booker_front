@@ -174,7 +174,7 @@ const Form = (): JSX.Element => {
               keyboardType="web-search"
               onChangeText={auctionId => { setAuctionId(auctionId) }}
               // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-              onBlur={async () => { await checkProd() }}
+              // onBlur={async () => { await checkProd() }}
             />
             <CustomButton label='検索' onPress={async () => { await checkProd() }}/>
           </View>
@@ -299,8 +299,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     padding: 8,
     marginBottom: 16,
-    width: '90%',
-    backgroundColor: '#a9a9a9'
+    width: '80%',
+    backgroundColor: '#a9a9a9',
+    marginRight: 10
   },
   invalidInput: {
     borderWidth: 1,
@@ -309,7 +310,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     padding: 8,
     marginBottom: 16,
-    width: '90%'
+    width: '80%',
+    marginRight: 10
   },
   inner: {
     paddingVertical: 24,
