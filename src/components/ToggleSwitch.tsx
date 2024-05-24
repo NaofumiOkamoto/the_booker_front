@@ -44,7 +44,8 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 20
+    marginBottom: 20,
+    marginTop: 20
   },
   switchContainer: {
     width: 300, // トグルスイッチの全体幅

@@ -3,9 +3,10 @@ import dayjs from 'dayjs'
 import { auth } from '../../../config'
 import { Stack } from 'expo-router'
 import { useEffect, useState } from 'react'
-import { View, StyleSheet, Text, ScrollView } from 'react-native'
+import { View, StyleSheet, Text, ScrollView, Button } from 'react-native'
 import { convertToCurrency } from '../../lib/function'
 import ToggleSwitch from '../../../components/ToggleSwitch'
+import DatePicker from '../../../components/DatePicker'
 
 export interface Book {
   id: number
@@ -20,6 +21,7 @@ export interface Book {
 const BookHistory = (): JSX.Element => {
   const [books, setBooks] = useState<Book[]>([])
   const [selectedValue, setSelectedValue] = useState('予約中')
+  const [isModalVisible, setModalVisibility] = useState(false)
 
   const filteredBooks =
     books?.filter(b => {
@@ -45,8 +47,16 @@ const BookHistory = (): JSX.Element => {
     <>
     <Stack.Screen options={{ headerShown: true, title: '予約履歴' }} />
     <View style={styles.container}>
-      <ScrollView style={styles.body_text}>
+      <View style={styles.header}>
         <ToggleSwitch selectedValue={selectedValue} onToggle={setSelectedValue} />
+        <View style={styles.search_button} >
+          <Button
+            title='検索'
+            onPress={() => { setModalVisibility(true) }}
+          />
+        </View>
+      </View>
+      <ScrollView style={styles.body_text}>
       <View>
         {(filteredBooks.length > 0)
           ? filteredBooks.map(book => {
@@ -64,6 +74,10 @@ const BookHistory = (): JSX.Element => {
           : <View><Text>存在しません</Text></View>}
       </View>
       </ScrollView>
+      <DatePicker
+        isModalVisible={isModalVisible}
+        setModalVisibility={setModalVisibility}
+      />
     </View>
     </>
   )
@@ -73,6 +87,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center'
+  },
+  header: {
+    flexDirection: 'row' // 縦で割る
+  },
+  search_button: {
+    margin: 20
   },
   body_text: {
     paddingTop: 30
