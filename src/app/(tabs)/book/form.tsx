@@ -167,14 +167,17 @@ const Form = (): JSX.Element => {
         <View style={styles.inner}>
           <Text style={styles.list_label}>オークションID</Text>
           {auctionIdInvalidMessage !== '' && !loding && (<Text style={styles.invalidMessage}>{auctionIdInvalidMessage}</Text>)}
-          <TextInput
-            style={validAuctionId || loding ? styles.input : styles.invalidInput}
-            value={auctionId}
-            keyboardType="web-search"
-            onChangeText={auctionId => { setAuctionId(auctionId) }}
-            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-            onBlur={async () => { await checkProd() }}
-          />
+          <View style={styles.auction_id_area}>
+            <TextInput
+              style={validAuctionId || loding ? styles.input : styles.invalidInput}
+              value={auctionId}
+              keyboardType="web-search"
+              onChangeText={auctionId => { setAuctionId(auctionId) }}
+              // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+              onBlur={async () => { await checkProd() }}
+            />
+            <CustomButton label='検索' onPress={async () => { await checkProd() }}/>
+          </View>
           <View style={styles.productTitle}>
             {
             loding
@@ -274,6 +277,9 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 24
   },
+  auction_id_area: {
+    flexDirection: 'row' // 縦で割る
+  },
   list_label: {
     marginTop: 20
   },
@@ -283,7 +289,8 @@ const styles = StyleSheet.create({
     height: 48,
     fontSize: 16,
     padding: 8,
-    width: '90%'
+    width: '80%',
+    marginRight: 10
   },
   disabledInput: {
     borderWidth: 1,
