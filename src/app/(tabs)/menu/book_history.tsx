@@ -17,19 +17,42 @@ export interface Book {
   bid_first_amount: number
   max_amount: number
   seconds: number
+  created_at: Date
 }
 const BookHistory = (): JSX.Element => {
   const [books, setBooks] = useState<Book[]>([])
   const [selectedValue, setSelectedValue] = useState('予約中')
   const [isModalVisible, setModalVisibility] = useState(false)
+  const [startDate, setStartDate] = useState<dayjs.Dayjs | undefined>(undefined)
+  const [endDate, setEndDate] = useState<dayjs.Dayjs | undefined>(undefined)
+  const [isSearch, setIsSearch] = useState(false)
+  const [searchText, setSearchText] = useState('')
 
   const filteredBooks =
     books?.filter(b => {
       const now = dayjs().add(9, 'h')
+      const closeTime = dayjs(b.close_time)
       return selectedValue === '予約中'
-        ? dayjs(b.close_time) > now
-        : dayjs(b.close_time) < now
+        ? closeTime > now
+        : closeTime < now
     })
+      .filter(b => {
+        if (!isSearch) return true
+        const startDateday = startDate?.format('YYYY-MM-DD')
+        const endDateday = endDate?.format('YYYY-MM-DD')
+        if (startDateday === undefined) return true
+        const createdAt = dayjs(b.created_at)
+        const isMatchDate = endDateday === undefined
+          ? createdAt.format('YYYY-MM-DD') === startDateday
+          : startDateday <= createdAt.format('YYYY-MM-DD') && createdAt.format('YYYY-MM-DD') <= endDateday
+        return isMatchDate
+      })
+      .filter(b => {
+        if (searchText === '') return true
+        const isMatchTitle = b.product_name.includes(searchText)
+        return isMatchTitle
+      })
+
   useEffect(() => {
     void (async (): Promise<void> => {
       try {
@@ -56,6 +79,9 @@ const BookHistory = (): JSX.Element => {
           />
         </View>
       </View>
+      {isSearch && startDate !== undefined && <Text>検索開始日: {String(startDate?.format('YYYY-MM-DD'))}</Text>}
+      {isSearch && endDate !== undefined && <Text>検索終了日: {String(endDate?.format('YYYY-MM-DD'))}</Text>}
+      {isSearch && searchText !== '' && <Text>検索キーワード: {searchText}</Text>}
       <ScrollView style={styles.body_text}>
       <View>
         {(filteredBooks.length > 0)
@@ -68,6 +94,7 @@ const BookHistory = (): JSX.Element => {
               <Text style={styles.list_text}>初回入札金額: {convertToCurrency(String(book.bid_first_amount))}</Text>
               <Text style={styles.list_text}>上限金額: {convertToCurrency(String(book.max_amount))}</Text>
               <Text style={styles.list_text}>入札時間: 終了{book.seconds}秒前</Text>
+              <Text style={styles.list_text}>予約登録日時: {dayjs(book.created_at).format('YYYY/MM/DD hh:mm:ss')}</Text>
             </View>
             )
           })
@@ -77,6 +104,13 @@ const BookHistory = (): JSX.Element => {
       <DatePicker
         isModalVisible={isModalVisible}
         setModalVisibility={setModalVisibility}
+        startDate={startDate}
+        endDate={endDate}
+        setStartDate={setStartDate}
+        setEndDate={setEndDate}
+        setIsSearch={setIsSearch}
+        setSearchText={setSearchText}
+        searchText={searchText}
       />
     </View>
     </>
