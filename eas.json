@@ -1,6 +1,10 @@
 {
   "build": {
     "production": {},
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
     "preview": {
       "extends": "production",
       "ios": {

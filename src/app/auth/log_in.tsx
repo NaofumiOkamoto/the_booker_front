@@ -47,9 +47,18 @@ const LogIn = (): JSX.Element => {
         <CustomButton label='ログイン' onPress={ () => { handlePress(email, password) }}/>
         <View style={styles.footer}>
           <Text style={styles.footerText}>not registerd</Text>
-          <Link href='/auth/sign_up' asChild>
+          <View>
+            <Link href='/auth/sign_up' asChild>
+              <TouchableOpacity>
+                <Text style={styles.footerLink}>Sign up here</Text>
+              </TouchableOpacity>
+            </Link>
+          </View>
+        </View>
+        <View>
+          <Link href='/auth/yahoo_login' asChild>
             <TouchableOpacity>
-              <Text style={styles.footerLink}>Sign up here</Text>
+              <Text style={styles.footerLink}>yahooを使用してログイン</Text>
             </TouchableOpacity>
           </Link>
         </View>
@@ -82,7 +91,8 @@ const styles = StyleSheet.create({
     marginBottom: 16
   },
   footer: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    marginBottom: 50
   },
   footerText: {
     fontSize: 14,

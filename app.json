@@ -23,7 +23,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.naofumiokamoto.TheBooker"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -39,9 +40,7 @@
         "projectId": "1567ff5d-c6a5-4f7e-a20f-1eddab70eef4"
       }
     },
-    "runtimeVersion": {
-      "policy": "appVersion"
-    },
+    "runtimeVersion": "1.0.0",
     "updates": {
       "url": "https://u.expo.dev/1567ff5d-c6a5-4f7e-a20f-1eddab70eef4"
     }
