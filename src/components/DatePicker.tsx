@@ -51,14 +51,14 @@ const DatePicker = ({ isModalVisible, setModalVisibility, startDate, endDate, se
               setEndDate(undefined)
               setSearchText('')
             }}
-            title='キャンセル'
+            title='クリア'
            />
           <Button
             onPress={() => {
               setModalVisibility(false)
               setIsSearch(true)
             }}
-            title='実行'
+            title='検索'
            />
         </View>
       </Modal>

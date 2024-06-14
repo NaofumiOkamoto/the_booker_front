@@ -30,7 +30,7 @@ const BookHistory = (): JSX.Element => {
 
   const filteredBooks =
     books?.filter(b => {
-      const now = dayjs().add(9, 'h')
+      const now = dayjs()
       const closeTime = dayjs(b.close_time)
       return selectedValue === '予約中'
         ? closeTime > now
@@ -58,7 +58,6 @@ const BookHistory = (): JSX.Element => {
       try {
         const res = await axios.get(`http://153.126.213.57:5001/book?user_id=${auth.currentUser?.uid}`)
         const books = res.data.books
-        console.log('books.length', books.length)
         setBooks(books)
       } catch (e) {
         console.log('予約履歴取得時エラー: ', e)
@@ -90,11 +89,11 @@ const BookHistory = (): JSX.Element => {
             <View style={styles.list} key={book.id}>
               <Text style={styles.list_text}>{book.product_name}</Text>
               <Text style={styles.list_text}>オークションID: {book.auction_id}</Text>
-              <Text style={styles.list_text}>終了予定日時: {dayjs(book.close_time).format('YYYY/MM/DD hh:mm:ss')}</Text>
+              <Text style={styles.list_text}>予約登録日時: {String(book.created_at)}</Text>
+              <Text style={styles.list_text}>終了予定日時: {String(book.close_time)}</Text>
               <Text style={styles.list_text}>初回入札金額: {convertToCurrency(String(book.bid_first_amount))}</Text>
               <Text style={styles.list_text}>上限金額: {convertToCurrency(String(book.max_amount))}</Text>
               <Text style={styles.list_text}>入札時間: 終了{book.seconds}秒前</Text>
-              <Text style={styles.list_text}>予約登録日時: {dayjs(book.created_at).format('YYYY/MM/DD hh:mm:ss')}</Text>
             </View>
             )
           })

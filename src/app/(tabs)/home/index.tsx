@@ -102,7 +102,7 @@ const Index = (): JSX.Element => {
         <Accordion title='使い方'>
           <Manual />
         </Accordion>
-        <Accordion title='料金表'>
+        <Accordion title='料金プラン'>
           <PriceList />
         </Accordion>
       </View>

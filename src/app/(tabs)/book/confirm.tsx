@@ -19,7 +19,7 @@ const Confirm = (): JSX.Element => {
         bid_first_amount: bidFirstAmount === '' ? null : convertNum(bidFirstAmount as string),
         max_amount: maxAmount === '' ? null : convertNum(maxAmount as string),
         seconds: selectSeconds,
-        close_time: dayjs(convertStringToDate(closeTimeString as string)).format('YYYY-MM-DD hh:mm:ss')
+        close_time: convertStringToDate(String(closeTimeString))
       }
     })
     console.log('post res: ', res)
@@ -40,6 +40,8 @@ const Confirm = (): JSX.Element => {
       <View style={styles.inner}>
         <Text style={styles.column}>予約サイト: {platform}</Text>
         <Text style={styles.column}>オークションID: { auctionId }</Text>
+        <Text style={styles.column}>終了日時{closeTimeString}</Text>
+        <Text style={styles.column}>終了日時{convertStringToDate(String(closeTimeString))}</Text>
         <Text style={styles.column}>初回入札金額: {bidFirstAmount}</Text>
         <Text style={styles.column}>上限金額: {maxAmount}</Text>
         <Text style={styles.column}>{selectSeconds}秒前に入札</Text>

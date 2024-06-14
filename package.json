@@ -15,6 +15,7 @@
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/stack": "^6.3.29",
     "axios": "^1.6.2",
+    "dayjs": "^1.11.11",
     "expo": "^51.0.6",
     "expo-auth-session": "~5.5.2",
     "expo-constants": "~16.0.1",
@@ -37,7 +38,8 @@
     "react-native-svg": "^15.3.0",
     "react-native-svg-charts": "^5.4.0",
     "react-native-ui-datepicker": "^2.0.2",
-    "react-native-webview": "^13.10.2"
+    "react-native-webview": "^13.10.2",
+    "timezone": "^1.0.23"
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",
