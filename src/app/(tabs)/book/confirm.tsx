@@ -40,8 +40,7 @@ const Confirm = (): JSX.Element => {
       <View style={styles.inner}>
         <Text style={styles.column}>予約サイト: {platform}</Text>
         <Text style={styles.column}>オークションID: { auctionId }</Text>
-        <Text style={styles.column}>終了日時{closeTimeString}</Text>
-        <Text style={styles.column}>終了日時{convertStringToDate(String(closeTimeString))}</Text>
+        <Text style={styles.column}>終了日時: {closeTimeString}</Text>
         <Text style={styles.column}>初回入札金額: {bidFirstAmount}</Text>
         <Text style={styles.column}>上限金額: {maxAmount}</Text>
         <Text style={styles.column}>{selectSeconds}秒前に入札</Text>
