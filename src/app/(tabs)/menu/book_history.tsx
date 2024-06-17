@@ -56,7 +56,7 @@ const BookHistory = (): JSX.Element => {
   useEffect(() => {
     void (async (): Promise<void> => {
       try {
-        const res = await axios.get(`http://localhost:5001/book?user_id=${auth.currentUser?.uid}`)
+        const res = await axios.get(`http://153.126.213.57:5001/book?user_id=${auth.currentUser?.uid}`)
         const books = res.data.books
         setBooks(books)
       } catch (e) {
