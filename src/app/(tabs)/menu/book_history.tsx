@@ -65,11 +65,11 @@ const BookHistory = (): JSX.Element => {
     })()
   }, [])
 
-  const handlePress = (auctionId: string): void => {
+  const handlePress = (auctionId: string, bidTime: string, closeTime: string): void => {
     router.push(
       {
         pathname: '/menu/book_history_detail',
-        params: { auctionId }
+        params: { auctionId, bidTime, closeTime }
       }
     )
   }
@@ -96,7 +96,7 @@ const BookHistory = (): JSX.Element => {
           ? filteredBooks.map(book => {
             return (
             <View style={styles.list} key={book.id}>
-              <TouchableOpacity onPress={ () => { handlePress(book.auction_id) }}>
+              <TouchableOpacity onPress={ () => { handlePress(book.auction_id, book.bid_time, book.close_time) }}>
                 <Text style={styles.list_text}>{book.product_name}</Text>
                 <Text style={styles.list_text}>オークションID: {book.auction_id}</Text>
                 <Text style={styles.list_text}>予約登録日時: {String(book.created_at)}</Text>

@@ -16,7 +16,7 @@ export interface Book {
 }
 const BookHistory = (): JSX.Element => {
   const params = useLocalSearchParams()
-  const { auctionId } = params
+  const { auctionId, bidTime, closeTime } = params
   const [imageUri, setImageUri] = useState(null)
   const [message, setMessage] = useState('')
 
@@ -41,10 +41,13 @@ const BookHistory = (): JSX.Element => {
     <>
     <Stack.Screen options={{ headerShown: true, title: '予約履歴詳細' }} />
     <View style={styles.container}>
-    <Text>詳細</Text>
 
     {imageUri && <Image source={{ uri: imageUri }} style={styles.image} />}
 
+    <View style={styles.message}>
+      <Text style={styles.bid_time}>{bidTime && `終了時間${String(closeTime)}に対して`}</Text>
+      <Text>{bidTime && `スクショ${String(bidTime)}`}</Text>
+    </View>
     <Text>{message}</Text>
     </View>
     </>
@@ -59,9 +62,16 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row' // 縦で割る
   },
+  message: {
+    alignItems: 'baseline'
+  },
   image: {
     width: '95%',
-    height: 300
+    height: 300,
+    marginTop: 30
+  },
+  bid_time: {
+    marginTop: 100
   }
 })
 
