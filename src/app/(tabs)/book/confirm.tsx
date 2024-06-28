@@ -10,7 +10,7 @@ const Confirm = (): JSX.Element => {
   const params = useLocalSearchParams()
   const { auctionId, bidFirstAmount, maxAmount, selectSeconds, prodTitle, closeTimeString, platform } = params
   const handlePress = async (): Promise<void> => {
-    const res = await axios.post('http://153.126.213.57:5001/book', {
+    const res = await axios.post(`http://${process.env.EXPO_PUBLIC_API_DOMAIN}:5001/book`, {
       book: {
         user_id: auth.currentUser?.uid,
         platform_name: platform,

@@ -23,7 +23,7 @@ const BookHistory = (): JSX.Element => {
   useEffect(() => {
     void (async (): Promise<void> => {
       try {
-        const response = await axios.get(`http://153.126.213.57:5001/api/get_img?auctionId=${auctionId}`, { responseType: 'blob' })
+        const response = await axios.get(`http://${process.env.EXPO_PUBLIC_API_DOMAIN}:5001/api/get_img?auctionId=${auctionId}`, { responseType: 'blob' })
         const reader = new FileReader()
         reader.onload = () => {
           setImageUri(reader.result)

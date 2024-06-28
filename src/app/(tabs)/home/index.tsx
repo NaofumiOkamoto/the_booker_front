@@ -14,7 +14,7 @@ const Index = (): JSX.Element => {
   // useEffect(() => {
   //   void (async (): Promise<void> => {
   //     try {
-  //       const res = await axios.get(`http://153.126.213.57:5001/book?user_id=${auth.currentUser?.uid}`)
+  //       const res = await axios.get(`http://EXPO_PUBLIC_API_DOMAIN:5001/book?user_id=${auth.currentUser?.uid}`)
   //       const yahoo = res.data.books.filter((b: Book) => b.platform_name === 'ヤフオク')
   //       const ebay = res.data.books.filter((b: Book) => b.platform_name === 'ebay')
   //       setYahoo(yahoo)
@@ -28,7 +28,8 @@ const Index = (): JSX.Element => {
     useCallback(() => {
       const fetchData = async (): Promise<void> => {
         try {
-          const res = await axios.get(`http://153.126.213.57:5001/book?user_id=${auth.currentUser?.uid}`)
+          const url = `http://${process.env.EXPO_PUBLIC_API_DOMAIN}:5001/book?user_id=${auth.currentUser?.uid}`
+          const res = await axios.get(url)
           const yahooBooks = res.data.books.filter((b: Book) => b.platform_name === 'ヤフオク')
           const ebayBooks = res.data.books.filter((b: Book) => b.platform_name === 'ebay')
           setYahoo(yahooBooks)
