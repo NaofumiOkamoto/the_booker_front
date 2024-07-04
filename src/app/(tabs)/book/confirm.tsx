@@ -4,7 +4,7 @@ import { convertNum, convertStringToDate } from '../../lib/function'
 import { auth } from '../../../config'
 import CustomButton from '../../../components/Button'
 import axios from 'axios'
-import dayjs from 'dayjs'
+// import dayjs from 'dayjs'
 
 const Confirm = (): JSX.Element => {
   const params = useLocalSearchParams()
