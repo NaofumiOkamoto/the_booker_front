@@ -1,13 +1,15 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { View, StyleSheet, Text, TextInput, ActivityIndicator, Button, ScrollView } from 'react-native'
+import { View, StyleSheet, Text, TextInput, ActivityIndicator, Button, ScrollView, TouchableOpacity, Modal } from 'react-native'
 import RNPickerSelect from 'react-native-picker-select'
-import { router, Stack, useLocalSearchParams } from 'expo-router'
+import { Link, router, Stack, useLocalSearchParams } from 'expo-router'
 import { useEffect, useState } from 'react'
 import CustomButton from '../../../components/Button'
 import { convertNum, convertToCurrency, convertFromCurrency } from '../../lib/function'
 import axios from 'axios'
 import { useNavigation } from '@react-navigation/native'
+import BidUnits from '../../../components/BidUnits'
 
+console.log(process.env.EXPO_PUBLIC_API_DOMAIN)
 const Form = (): JSX.Element => {
   const userPlan: number = 1 // global stateか何かで保持する
 
@@ -158,11 +160,21 @@ const Form = (): JSX.Element => {
       }
     : {}
 
+  const clickHere = (): void => {
+    setModalVisibility(true)
+  }
+  const [modalVisibility, setModalVisibility] = useState(false)
+
   return (
     <>
     <Stack.Screen options={{ headerShown: true, title: '予約条件入力', ...headerLeft }} />
     <ScrollView>
       <View style={styles.container}>
+        <BidUnits
+          isModalVisible={modalVisibility}
+          setModalVisibility={setModalVisibility}
+        />
+
         <Text style={styles.platform}>{platform}</Text>
         <View style={styles.inner}>
           <Text style={styles.list_label}>オークションID</Text>
@@ -174,7 +186,6 @@ const Form = (): JSX.Element => {
               keyboardType="web-search"
               onChangeText={auctionId => { setAuctionId(auctionId) }}
               // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-              // onBlur={async () => { await checkProd() }}
             />
             <CustomButton label='検索' onPress={async () => { await checkProd() }}/>
           </View>
@@ -221,8 +232,21 @@ const Form = (): JSX.Element => {
                 setMaxAmount(convertToCurrency(maxAmount))
               }}
             />
-            <Text>※他の入札者がいてもユーザー様が高額入札者になるよう設定した上限金額まで最小単位で自動入札いたします。</Text>
-            <Text>※他の入札者が現れて自動延長された後でも、設定した残り秒数まで待って設定した上限金額まで入札を繰り返します。常に残り秒数を確認する手間を省けます。終了ギリギリで入札し続けることによって、他の入札者は終了時間を常に気にしていないといけない状況になる、他の入札者が離脱するなどが考えられるため、落札できる可能性を上げます。</Text>
+            <Text>※指定した入札時間時に現在価格が設定した初回入札金額を上回っている場合は、その現在価格が設定した上限金額内であれば、現在価格に最少単位で上乗せする形で自動入札いたします。</Text>
+            <Text>(例)</Text>
+            <Text>・初回入札金額→1,000円</Text>
+            <Text>・上限金額→2,000円</Text>
+            <Text>・指定した入札時間時の現在価格→1,500円</Text>
+            <Text>以上の条件の場合、指定した入札時間に1,600円で入札いたします。</Text>
+            <Text>※ヤフオクの自動延長(オークション終了5分前から終了までに「現在の価格」が上がった場合、終了時間が5分間延長される機能)が発生した後でも、再度設定した残り秒数まで待ち、上限金額まで最少単位で入札を繰り返します。これにより、残り秒数を常に確認する手間が省けます。また、終了間際で入札を続けることによって、他の入札者は終了時間を確認する頻度が増え、オークションを離脱するなどが考えられるため、落札できる可能性を上げます。</Text>
+            <View style={styles.here}>
+              <Text>
+              ヤフオクの入札単位は
+                <TouchableOpacity onPress={clickHere}>
+                  <Text>こちら</Text>
+                </TouchableOpacity>
+              </Text>
+            </View>
             </>
           }
           <Text style={styles.list_label}>入札タイミング</Text>
@@ -320,6 +344,18 @@ const styles = StyleSheet.create({
   },
   form: {
     flexDirection: 'row' // 縦で割る
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  here: {
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10
   }
 })
 

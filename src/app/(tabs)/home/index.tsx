@@ -10,6 +10,7 @@ import { useState, useCallback } from 'react'
 import { type Book } from '../menu/book_history'
 import { useFocusEffect } from '@react-navigation/native'
 
+console.log(process.env.EXPO_PUBLIC_API_DOMAIN)
 const Index = (): JSX.Element => {
   // useEffect(() => {
   //   void (async (): Promise<void> => {

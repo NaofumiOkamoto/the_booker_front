@@ -14,6 +14,7 @@ export interface Book {
   seconds: number
   created_at: Date
 }
+console.log(process.env.EXPO_PUBLIC_API_DOMAIN)
 const BookHistory = (): JSX.Element => {
   const params = useLocalSearchParams()
   const { auctionId, bidTime, closeTime } = params

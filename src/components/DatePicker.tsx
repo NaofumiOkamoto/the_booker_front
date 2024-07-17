@@ -18,9 +18,7 @@ interface Props {
 const DatePicker = ({ isModalVisible, setModalVisibility, startDate, endDate, setStartDate, setEndDate, setIsSearch, setSearchText, searchText }: Props): JSX.Element => {
   return (
     <View style={styles.container}>
-      <Modal
-        isVisible={isModalVisible}
-      >
+      <Modal isVisible={isModalVisible}>
         <View style={styles.modalContent}>
           <DateTimePicker
             mode="range"

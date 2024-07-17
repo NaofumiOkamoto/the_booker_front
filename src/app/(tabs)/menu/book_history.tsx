@@ -19,6 +19,7 @@ export interface Book {
   seconds: number
   created_at: Date
 }
+console.log(process.env.EXPO_PUBLIC_API_DOMAIN)
 const BookHistory = (): JSX.Element => {
   const [books, setBooks] = useState<Book[]>([])
   const [selectedValue, setSelectedValue] = useState('予約中')

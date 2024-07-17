@@ -6,6 +6,7 @@ import CustomButton from '../../../components/Button'
 import axios from 'axios'
 // import dayjs from 'dayjs'
 
+console.log(process.env.EXPO_PUBLIC_API_DOMAIN)
 const Confirm = (): JSX.Element => {
   const params = useLocalSearchParams()
   const { auctionId, bidFirstAmount, maxAmount, selectSeconds, prodTitle, closeTimeString, platform } = params
