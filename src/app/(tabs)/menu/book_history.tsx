@@ -18,6 +18,7 @@ export interface Book {
   max_amount: number
   seconds: number
   created_at: Date
+  bid_time: Date
 }
 console.log(process.env.EXPO_PUBLIC_API_DOMAIN)
 const BookHistory = (): JSX.Element => {
@@ -98,7 +99,7 @@ const BookHistory = (): JSX.Element => {
           ? filteredBooks.map(book => {
             return (
             <View style={styles.list} key={book.id}>
-              <TouchableOpacity onPress={ () => { handlePress(book.auction_id, book.bid_time, book.close_time) }}>
+              <TouchableOpacity onPress={ () => { handlePress(book.auction_id, String(book.bid_time), String(book.close_time)) }}>
                 <Text style={styles.list_text}>{book.product_name}</Text>
                 <Text style={styles.list_text}>オークションID: {book.auction_id}</Text>
                 <Text style={styles.list_text}>予約登録日時: {String(book.created_at)}</Text>

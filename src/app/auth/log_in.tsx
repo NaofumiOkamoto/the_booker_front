@@ -1,22 +1,25 @@
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert } from 'react-native'
+import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native'
 import { Link, router } from 'expo-router'
 import CustomButton from '../../components/Button'
-import { signInWithEmailAndPassword } from 'firebase/auth'
+// import { signInWithEmailAndPassword } from 'firebase/auth'
 import { useState } from 'react'
-import { auth } from '../../config'
-import { authError } from '../lib/function'
+// import { auth } from '../../config'
+// import { authError } from '../lib/function'
 
 const handlePress = (email: string, password: string): void => {
-  signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      console.log(userCredential.user.uid)
-      router.replace('/(tabs)/home')
-    })
-    .catch((error) => {
-      const { code, message } = error
-      console.log(code, message)
-      Alert.alert(authError(code))
-    })
+  console.log(email)
+  console.log(password)
+  router.replace('/(tabs)/home')
+  // signInWithEmailAndPassword(auth, email, password)
+  //   .then((userCredential) => {
+  //     console.log(userCredential.user.uid)
+  //     router.replace('/(tabs)/home')
+  //   })
+  //   .catch((error) => {
+  //     const { code, message } = error
+  //     console.log(code, message)
+  //     Alert.alert(authError(code))
+  //   })
 }
 
 const LogIn = (): JSX.Element => {
@@ -59,6 +62,11 @@ const LogIn = (): JSX.Element => {
           <Link href='/auth/yahoo_login' asChild>
             <TouchableOpacity>
               <Text style={styles.footerLink}>yahooを使用してログイン</Text>
+            </TouchableOpacity>
+          </Link>
+          <Link href='/auth/ebay_login' asChild>
+            <TouchableOpacity>
+              <Text style={styles.footerLink}>ebayを使用してログイン</Text>
             </TouchableOpacity>
           </Link>
         </View>

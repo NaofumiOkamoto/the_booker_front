@@ -1,17 +1,19 @@
 import { Stack, router } from 'expo-router'
 import { View, StyleSheet, Text, TouchableOpacity, ScrollView } from 'react-native'
-import { auth } from '../../../config'
-import PieChart from '../../../components/PieChart'
-import Accordion from '../../../components/Accordion'
-import Manual from '../../../components/Manual'
-import PriceList from '../../../components/PriceList'
-import axios from 'axios'
-import { useState, useCallback } from 'react'
-import { type Book } from '../menu/book_history'
-import { useFocusEffect } from '@react-navigation/native'
+// import { auth } from '../../../config'
+// import PieChart from '../../../components/PieChart'
+// import Accordion from '../../../components/Accordion'
+// import Manual from '../../../components/Manual'
+// import PriceList from '../../../components/PriceList'
+// import axios from 'axios'
+// import { useCallback } from 'react'
+// import { type Book } from '../menu/book_history'
+// import { useFocusEffect } from '@react-navigation/native'
 
-console.log(process.env.EXPO_PUBLIC_API_DOMAIN)
+// console.log(process.env.EXPO_PUBLIC_API_DOMAIN)
 const Index = (): JSX.Element => {
+  // const [yahoo, setYahoo] = useState([])
+  // const [ebay, setEbay] = useState([])
   // useEffect(() => {
   //   void (async (): Promise<void> => {
   //     try {
@@ -25,27 +27,29 @@ const Index = (): JSX.Element => {
   //     }
   //   })()
   // }, [])
-  useFocusEffect(
-    useCallback(() => {
-      const fetchData = async (): Promise<void> => {
-        try {
-          const url = `http://${process.env.EXPO_PUBLIC_API_DOMAIN}:5001/book?user_id=${auth.currentUser?.uid}`
-          const res = await axios.get(url)
-          const yahooBooks = res.data.books.filter((b: Book) => b.platform_name === 'ヤフオク')
-          const ebayBooks = res.data.books.filter((b: Book) => b.platform_name === 'ebay')
-          setYahoo(yahooBooks)
-          setEbay(ebayBooks)
-        } catch (e) {
-          console.log('予約履歴取得時エラー: ', e)
-        }
-      }
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      fetchData()
-    }, [])
-  )
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     const fetchData = async (): Promise<void> => {
+  //       try {
+  //         console.log('fetchData')
+  //         // const url = `https://${process.env.EXPO_PUBLIC_API_DOMAIN}:5001/book?user_id=${auth.currentUser?.uid}`
+  //         // const url = 'https://google.com'
+  //         // console.log(url)
+  //         // await axios.get(url)
+  //         // console.log(res.data)
+  //         // const yahooBooks = res.data.books.filter((b: Book) => b.platform_name === 'ヤフオク')
+  //         // const ebayBooks = res.data.books.filter((b: Book) => b.platform_name === 'ebay')
+  //         // setYahoo(yahooBooks)
+  //         // setEbay(ebayBooks)
+  //       } catch (e) {
+  //         console.log('予約履歴取得時エラー: ', e)
+  //       }
+  //     }
+  //     // eslint-disable-next-line @typescript-eslint/no-floating-promises
+  //     fetchData()
+  //   }, [])
+  // )
 
-  const [yahoo, setYahoo] = useState([])
-  const [ebay, setEbay] = useState([])
   // const [now, setNow] = useState(new Date())
   // setNow(new Date())
 
@@ -56,10 +60,10 @@ const Index = (): JSX.Element => {
     })
   }
   const numberOfReservationsAvailable = 30 // 予約可能件数
-  const numberOfReservationsYahoo = yahoo.length // 予約数
-  const numberOfReservationsEbay = ebay.length // 予約数
+  const numberOfReservationsYahoo = 0 // yahoo?.length ?? 0// 予約数
+  const numberOfReservationsEbay = 0 // ebay?.length ?? 0 // 予約数
   const numberOfReservations = numberOfReservationsYahoo + numberOfReservationsEbay // 予約数
-  const numberOfRest = numberOfReservationsAvailable - numberOfReservations
+  // const numberOfRest = numberOfReservationsAvailable - numberOfReservations
 
   return (
     <>
@@ -67,7 +71,7 @@ const Index = (): JSX.Element => {
     <ScrollView>
     <View style={styles.container}>
         <View style={styles.plan}>
-          <Text style={styles.current_user}>{auth.currentUser?.email}</Text>
+          {/* <Text style={styles.current_user}>{auth.currentUser?.email}</Text> */}
           <Text style={styles.plan_text}>xxxxxxプラン</Text>
           <TouchableOpacity onPress={ () => { handlePress('plan') }}>
             <Text style={styles.book_history_link_text}>プランを変更する</Text>
@@ -75,11 +79,11 @@ const Index = (): JSX.Element => {
         </View>
         <View style={styles.book_count}>
           <View>
-            <PieChart
+            {/* <PieChart
               numberOfRest={numberOfRest}
               numberOfReservationsYahoo={numberOfReservationsYahoo}
               numberOfReservationsEbay={numberOfReservationsEbay}
-            />
+            /> */}
           </View>
           <View>
             <Text style={styles.book_text}>{`${numberOfReservations}/${numberOfReservationsAvailable}`}件</Text>
@@ -101,12 +105,12 @@ const Index = (): JSX.Element => {
             <Text style={styles.book_history_link_text}>購入履歴を見る</Text>
           </TouchableOpacity>
         </View>
-        <Accordion title='使い方'>
+        {/* <Accordion title='使い方'>
           <Manual />
         </Accordion>
         <Accordion title='料金プラン'>
           <PriceList />
-        </Accordion>
+        </Accordion> */}
       </View>
     </ScrollView>
     </>

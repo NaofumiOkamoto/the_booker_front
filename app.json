@@ -16,8 +16,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.naofumiokamoto.TheBooker"
+      "bundleIdentifier": "com.naofumiokamoto.TheBooker",
+      "buildNumber": "1.0.12"
     },
     "android": {
       "adaptiveIcon": {
