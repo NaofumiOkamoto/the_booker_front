@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler'
 import { Redirect, router } from 'expo-router'
-import { onAuthStateChanged } from 'firebase/auth'
-import { auth } from '../config'
+// import { onAuthStateChanged } from 'firebase/auth'
+// import { auth } from '../config'
 import { useEffect } from 'react'
 
 const Index = (): JSX.Element => {

@@ -30,7 +30,7 @@ const LogIn = (): JSX.Element => {
     <View style={styles.container}>
       <View style={styles.inner}>
         <Text style={styles.title}>Log In</Text>
-        <TextInput
+        {/* <TextInput
           style={styles.input}
           value={email}
           onChangeText={(text) => { setEmail(text) }}
@@ -57,13 +57,13 @@ const LogIn = (): JSX.Element => {
               </TouchableOpacity>
             </Link>
           </View>
-        </View>
+        </View> */}
         <View>
-          <Link href='/auth/yahoo_login' asChild>
+          {/* <Link href='/auth/yahoo_login' asChild>
             <TouchableOpacity>
               <Text style={styles.footerLink}>yahooを使用してログイン</Text>
             </TouchableOpacity>
-          </Link>
+          </Link> */}
           <Link href='/auth/ebay_login' asChild>
             <TouchableOpacity>
               <Text style={styles.footerLink}>ebayを使用してログイン</Text>

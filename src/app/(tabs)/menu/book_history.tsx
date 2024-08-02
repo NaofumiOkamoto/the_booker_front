@@ -1,6 +1,6 @@
 import axios from 'axios'
 import dayjs from 'dayjs'
-import { auth } from '../../../config'
+// import { auth } from '../../../config'
 import { Stack, router } from 'expo-router'
 import { useEffect, useState } from 'react'
 import { View, StyleSheet, Text, ScrollView, Button, TouchableOpacity } from 'react-native'
@@ -58,10 +58,10 @@ const BookHistory = (): JSX.Element => {
   useEffect(() => {
     void (async (): Promise<void> => {
       try {
-        const url = `http://${process.env.EXPO_PUBLIC_API_DOMAIN}:5001/book?user_id=${auth.currentUser?.uid}`
-        const res = await axios.get(url)
-        const books = res.data.books
-        setBooks(books)
+        // const url = `http://${process.env.EXPO_PUBLIC_API_DOMAIN}:5001/book?user_id=${auth.currentUser?.uid}`
+        // const res = await axios.get(url)
+        // const books = res.data.books
+        // setBooks(books)
       } catch (e) {
         console.log('予約履歴取得時エラー: ', e)
       }
