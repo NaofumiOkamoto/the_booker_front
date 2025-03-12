@@ -17,7 +17,7 @@
     ],
     "ios": {
       "bundleIdentifier": "com.naofumiokamoto.TheBooker",
-      "buildNumber": "1.0.12"
+      "buildNumber": "1.0.13"
     },
     "android": {
       "adaptiveIcon": {

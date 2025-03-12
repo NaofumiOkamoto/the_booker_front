@@ -1,10 +1,12 @@
-import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Button } from 'react-native'
 import { Link, router } from 'expo-router'
 import CustomButton from '../../components/Button'
 // import { signInWithEmailAndPassword } from 'firebase/auth'
 import { useState } from 'react'
 // import { auth } from '../../config'
 // import { authError } from '../lib/function'
+import EbayLogIn2 from './eaby_login2'
+import AuthProvider from '../auth/AuthProvider'
 
 const handlePress = (email: string, password: string): void => {
   console.log(email)
@@ -27,10 +29,12 @@ const LogIn = (): JSX.Element => {
   const [password, setPassword] = useState('')
 
   return (
+    <AuthProvider>
     <View style={styles.container}>
+
       <View style={styles.inner}>
         <Text style={styles.title}>Log In</Text>
-        {/* <TextInput
+        <TextInput
           style={styles.input}
           value={email}
           onChangeText={(text) => { setEmail(text) }}
@@ -49,29 +53,31 @@ const LogIn = (): JSX.Element => {
         />
         <CustomButton label='ログイン' onPress={ () => { handlePress(email, password) }}/>
         <View style={styles.footer}>
-          <Text style={styles.footerText}>not registerd</Text>
+          {/* <Text style={styles.footerText}>not registerd</Text>
           <View>
             <Link href='/auth/sign_up' asChild>
               <TouchableOpacity>
                 <Text style={styles.footerLink}>Sign up here</Text>
               </TouchableOpacity>
             </Link>
-          </View>
-        </View> */}
+          </View> */}
+        </View>
         <View>
           {/* <Link href='/auth/yahoo_login' asChild>
             <TouchableOpacity>
               <Text style={styles.footerLink}>yahooを使用してログイン</Text>
             </TouchableOpacity>
           </Link> */}
-          <Link href='/auth/ebay_login' asChild>
+          {/* <Link href='/auth/ebay_login' asChild>
             <TouchableOpacity>
               <Text style={styles.footerLink}>ebayを使用してログイン</Text>
             </TouchableOpacity>
-          </Link>
+          </Link> */}
+          <EbayLogIn2 />
         </View>
       </View>
     </View>
+    </AuthProvider>
   )
 }
 

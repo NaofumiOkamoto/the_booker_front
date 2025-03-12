@@ -28,9 +28,9 @@ const Index = (): JSX.Element => {
   const logOut = (): void => {
     router.replace('auth/log_in')
   }
-  const ebay = (): void => {
-    router.replace('auth/ebay_login')
-  }
+  // const ebay = (): void => {
+  //   // router.replace('auth/ebay_login')
+  // }
   return (
     <>
     <Stack.Screen options={{ headerShown: true, title: 'メニュー' }} />
@@ -68,9 +68,6 @@ const Index = (): JSX.Element => {
         </ TouchableOpacity>
         <TouchableOpacity style={styles.list_item} onPress={ () => { logOut() }}>
           <Text style={styles.list_item_text}>ログアウト</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.list_item} onPress={ () => { ebay() }}>
-          <Text style={styles.list_item_text}>ebay(テスト)</Text>
         </TouchableOpacity>
       </View>
       </ScrollView>

@@ -1,9 +1,16 @@
 {
+  "cli": {
+    "version": ">= 0.38.0"
+  },
   "build": {
-    "production": {},
     "development": {
       "developmentClient": true,
       "distribution": "internal"
+    },
+    "production": {
+      "ios": {
+        "distribution": "store"
+      }
     },
     "preview": {
       "extends": "production",
@@ -12,6 +19,22 @@
       },
       "android": {
         "buildType": "apk"
+      }
+    }
+  },
+  "submit": {
+    "development": {
+      "ios": {
+        "appleId": "thebooker.jp@gmail.com",
+        "ascAppId": "6572293283",
+        "appleTeamId": "ZP86NK4999"
+      }
+    },
+    "production": {
+      "ios": {
+        "appleId": "thebooker.jp@gmail.com",
+        "ascAppId": "6572293283",
+        "appleTeamId": "ZP86NK4999"
       }
     }
   }
